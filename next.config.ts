@@ -1,10 +1,15 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
-   images: {
-    qualities: [70, 75, 85, 90], // Yeh line add karo
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
-};
+}
 
-export default nextConfig;
+module.exports = nextConfig

@@ -116,7 +116,7 @@ export default function NewArrivals() {
                         alt={`${product.name} - Available at Meyuza's Design`}
                         fill
                         sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                        quality={85}
+                        quality={75}
                         className="object-cover transition-all duration-700 group-hover:scale-110 rounded-xl"
                         onLoad={() => handleImageLoad(product.id)}
                         loading="lazy"
