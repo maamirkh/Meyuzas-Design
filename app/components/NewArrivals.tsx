@@ -1,7 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import useIntersectionObserver from '../hooks/useIntersectionObserver';
 
 interface Product {
   id: number;
@@ -59,6 +60,8 @@ const products: Product[] = [
 
 export default function NewArrivals() {
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
+  const sectionRef = useRef<HTMLElement>(null);
+  const isVisible = useIntersectionObserver(sectionRef, { threshold: 0.1, triggerOnce: true });
 
   const handleImageLoad = (id: number) => {
     setLoadedImages(prev => new Set(prev).add(id));
@@ -85,7 +88,10 @@ export default function NewArrivals() {
   };
 
   return (
-    <section className="bg-[#9ECFD4] py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8">
+    <section 
+      ref={sectionRef}
+      className={`bg-[#9ECFD4] py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 scroll-animate ${isVisible ? 'is-visible' : ''} border border-transparent`}
+    >
       <div className="max-w-6xl mx-auto">
         
         {/* Section Header */}

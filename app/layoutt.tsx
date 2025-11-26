@@ -1,18 +1,10 @@
 import './globals.css';
-import { Poppins } from 'next/font/google';
-import Navbar from './components/Navbar';
+import Navbar from './components/Navbarr';
 import Footer from './components/Footer';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
 import { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { CartProvider } from "./context/CartContext";
-import { ClerkProvider } from '@clerk/nextjs';
-
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
-  display: 'swap',
-});
 
 // SEO Metadata Configuration
 export const metadata: Metadata = {
@@ -96,49 +88,51 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
-        <head>
-          {/* Structured Data for SEO */}
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                '@context': 'https://schema.org',
-                '@type': 'ClothingStore',
-                name: 'Meyuza\'s Design',
-                description: 'Fashionable and trendy clothing for everyone',
-                url: 'https://meyuzas-design.com',
-                logo: 'https://meyuzas-design.com/Meyuza\'s Logo.png',
-                address: {
-                  '@type': 'PostalAddress',
-                  addressCountry: 'PK'
-                },
-                openingHoursSpecification: {
-                  '@type': 'OpeningHoursSpecification',
-                  dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-                  opens: '00:00',
-                  closes: '23:59'
-                },
-                priceRange: '$$',
-                aggregateRating: {
-                  '@type': 'AggregateRating',
-                  ratingValue: '4.8',
-                  reviewCount: '10000'
-                }
-              })
-            }}
-          />
-        </head>
-        <body className={`${poppins.className} antialiased text-gray-900 min-h-screen flex flex-col`}>
-          <CartProvider>
-            <Navbar />
-            <main className="flex-grow">{children}</main>
-          </CartProvider>
-          <Footer />
-          <FloatingWhatsApp />
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Preconnect to improve performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
+        {/* Structured Data for SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'ClothingStore',
+              name: 'Meyuza\'s Design',
+              description: 'Fashionable and trendy clothing for everyone',
+              url: 'https://meyuzas-design.com',
+              logo: 'https://meyuzas-design.com/Meyuza\'s Logo.png',
+              address: {
+                '@type': 'PostalAddress',
+                addressCountry: 'PK'
+              },
+              openingHoursSpecification: {
+                '@type': 'OpeningHoursSpecification',
+                dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                opens: '00:00',
+                closes: '23:59'
+              },
+              priceRange: '$$',
+              aggregateRating: {
+                '@type': 'AggregateRating',
+                ratingValue: '4.8',
+                reviewCount: '10000'
+              }
+            })
+          }}
+        />
+      </head>
+      <body className="antialiased text-gray-900 min-h-screen flex flex-col">
+        <CartProvider>
+        <Navbar />
+        <main className="flex-grow">{children}</main>
+        </CartProvider>
+        <Footer />
+        <FloatingWhatsApp />
+      </body>
+    </html>
   );
 }

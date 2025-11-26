@@ -29,7 +29,7 @@ export default function Hero() {
   }, [rotationImages.length]);
 
   return (
-    <section className="relative bg-[#9ECFD4] overflow-hidden">
+    <section className="relative bg-[#9ECFD4] overflow-hidden border border-transparent">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-24">
           

@@ -94,7 +94,7 @@ export default function CheckoutPage() {
           <p className="text-[#016B61]/70 mb-6">Please add items to your cart before checkout.</p>
           <button
             onClick={() => router.push('/fetchProduct')}
-            className="bg-gradient-to-r from-[#9ECFD4] via-[#78B9B5] to-[#016B61] text-black px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
+            className="inline-block bg-gradient-to-r from-[#9ECFD4] via-[#78B9B5] to-[#016B61] hover:from-[#78B9B5] hover:via-[#016B61] hover:to-[#9ECFD4] text-black px-8 py-3 rounded-xl font-bold text-base shadow-lg hover:shadow-xl transition-all duration-300"
           >
             Continue Shopping
           </button>

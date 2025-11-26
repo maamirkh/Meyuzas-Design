@@ -1,0 +1,3 @@
+Type '{ children: Element; mode: "modal"; afterSignInRedirectUrl: string; asChild: true; }' is not assignable to type 'IntrinsicAttributes & Without<WithClerkProp<PropsWithChildren<SignInButtonProps>>, "clerk">'.
+  Property 'afterSignInRedirectUrl' does not exist on type 'IntrinsicAttributes & Without<SignInButtonPropsModal & Pick<SignInProps, "fallbackRedirectUrl" | "forceRedirectUrl" | ... 4 more ... | "oauthFlow"> & { ...; } & { ...; }, "clerk">'.ts(2322)
+(property) afterSignInRedirectUrl: string

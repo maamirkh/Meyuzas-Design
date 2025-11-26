@@ -1,10 +1,13 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import useIntersectionObserver from '../hooks/useIntersectionObserver';
 
 export default function Newsletter() {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
+  const sectionRef = useRef<HTMLElement>(null);
+  const isVisible = useIntersectionObserver(sectionRef, { threshold: 0.1, triggerOnce: true });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +31,10 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="bg-[#9ECFD4] py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+    <section 
+      ref={sectionRef}
+      className={`bg-[#9ECFD4] py-8 sm:py-12 px-4 sm:px-6 lg:px-8 scroll-animate ${isVisible ? 'is-visible' : ''} border border-transparent`}
+    >
       <div className="max-w-6xl mx-auto">
         <div className="bg-black text-white py-6 sm:py-8 lg:py-12 px-4 sm:px-6 lg:px-8 rounded-2xl shadow-2xl">
           <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-6 lg:gap-12">

@@ -20,11 +20,11 @@ export default function AddToCartButton({ product }: { product: Product }) {
     Swal.fire({
       position: "top-end",
       icon: "success",
-      title: '<span style="color: #10b981; font-weight: 700;">Added to Cart!</span>',
+      title: '<span style="color: #016B61; font-weight: 700;">Added to Cart!</span>',
       html: `
         <div style="text-align: center; padding: 10px;">
-          <p style="color: #64748b; font-size: 14px; margin-top: 8px;">
-            <strong style="color: #3b82f6;">${product.productName}</strong> has been added to your cart
+          <p style="color: #016B61; font-size: 14px; margin-top: 8px;">
+            <strong style="color: #78B9B5;">${product.productName}</strong> has been added to your cart
           </p>
         </div>
       `,
@@ -34,7 +34,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
       toast: true,
       background: '#ffffff',
       customClass: {
-        popup: 'rounded-2xl shadow-2xl',
+        popup: 'rounded-2xl shadow-2xl border-2 border-[#9ECFD4]',
         title: 'text-lg',
         htmlContainer: 'text-sm'
       }
@@ -44,7 +44,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
   return (
     <button
       onClick={handleAddToCart}
-      className="w-full md:w-auto px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+      className="px-6 py-3 relative bg-gradient-to-r from-[#9ECFD4] via-[#78B9B5] to-[#016B61] hover:from-[#78B9B5] hover:via-[#016B61] hover:to-[#9ECFD4] text-black rounded-xl font-bold text-base shadow-lg hover:shadow-xl transition-all duration-500 flex items-center justify-center group"
     >
       Add to Cart
     </button>
