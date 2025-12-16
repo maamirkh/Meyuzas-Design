@@ -174,12 +174,12 @@ export default function NewArrivals() {
                     {/* Price */}
                     <div className="flex items-center gap-2">
                       <span className="text-sm sm:text-base font-bold text-gray-900">
-                        ${product.price}
+                        Rs. {product.price}
                       </span>
                       {product.originalPrice && (
                         <>
                           <span className="text-xs sm:text-sm text-gray-500 line-through">
-                            ${product.originalPrice}
+                            Rs. {product.originalPrice}
                           </span>
                         </>
                       )}

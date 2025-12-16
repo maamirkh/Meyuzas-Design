@@ -6,6 +6,9 @@ interface CartItem {
   price: number;
   quantity: number;
   image: string;
+  _type: 'product' | 'onsaleproducts';
+  discountPercentage?: number;
+  currentPrice?: number;
 }
 
 interface OrderSummaryProps {
@@ -31,22 +34,40 @@ export default function OrderSummary({ cartItems, subtotal, shipping }: OrderSum
 
       {/* Cart Items */}
       <div className="space-y-4 mb-6 max-h-64 overflow-y-auto custom-scrollbar">
-        {cartItems.map((item) => (
-          <div key={item.id} className="flex gap-3 pb-4 border-b border-[#9ECFD4]/30 last:border-0">
-            <div className="w-16 h-16 bg-gradient-to-br from-[#9ECFD4]/20 to-[#78B9B5]/20 rounded-lg overflow-hidden flex-shrink-0 shadow-sm">
-              <img 
-                src={item.image} 
-                alt={item.name}
-                className="w-full h-full object-cover"
-              />
+        {cartItems.map((item) => {
+          const itemPrice = Number(item.price) || 0; // Original price
+          const itemQty = Number(item.quantity) || 0;
+          let displayPrice = itemPrice; // Default to original price
+          let isDiscounted = false;
+
+          if (item._type === 'onsaleproducts' && item.currentPrice !== undefined) {
+              displayPrice = item.currentPrice;
+              isDiscounted = true;
+          }
+          const totalItemPrice = displayPrice * itemQty;
+
+          return (
+            <div key={item.id} className="flex gap-3 pb-4 border-b border-[#9ECFD4]/30 last:border-0">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#9ECFD4]/20 to-[#78B9B5]/20 rounded-lg overflow-hidden flex-shrink-0 shadow-sm">
+                <img 
+                  src={item.image} 
+                  alt={item.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-sm font-semibold text-[#016B61] truncate">{item.name}</h3>
+                <p className="text-sm text-[#016B61]/70">Qty: {item.quantity}</p>
+                <div className="flex items-baseline gap-2">
+                  <p className="text-sm font-bold text-[#016B61]">Rs. {totalItemPrice.toFixed(2)}</p>
+                  {isDiscounted && (
+                    <p className="text-xs font-medium text-red-500 line-through">Rs. {(itemPrice * itemQty).toFixed(2)}</p>
+                  )}
+                </div>
+              </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="text-sm font-semibold text-[#016B61] truncate">{item.name}</h3>
-              <p className="text-sm text-[#016B61]/70">Qty: {item.quantity}</p>
-              <p className="text-sm font-bold text-[#016B61]">Rs. {(item.price * item.quantity).toFixed(2)}</p>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Pricing Breakdown - Tax Removed */}

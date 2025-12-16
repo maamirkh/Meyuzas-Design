@@ -1,27 +1,28 @@
 import React from 'react';
 import { client } from '../../../sanity/lib/client';
-import ProductsClient from './ProductsClient';
+import OnSaleProductsClient from './OnSaleProductsClient';
 import { Product } from '../../../types/product';
 
 // Re-evaluate this page every 0 seconds
 export const revalidate = 0;
 
-const ProductsPage = async () => {
-  const query = `*[_type == "product"]{
+const OnSaleProductsPage = async () => {
+  const query = `*[_type == "onsaleproducts"]{
     _id,
     productName,
     "slug": slug.current,
     category,
     price,
     inventory,
-    image
+    image,
+    discountPercentage
   }`;
   
   const products: Product[] = await client.fetch(query);
 
   return (
-    <ProductsClient products={products} />
+    <OnSaleProductsClient products={products} />
   );
 };
 
-export default ProductsPage;
+export default OnSaleProductsPage;

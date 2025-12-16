@@ -6,17 +6,17 @@ import { FiDollarSign, FiShoppingCart, FiUsers, FiClock, FiCheckCircle, FiXCircl
 
 const AdminPage = () => {
   const stats = [
-    { title: 'Total Revenue', value: '$7,845', icon: <FiDollarSign className="text-green-500" />, trend: { direction: 'up', value: '5.4%' } },
+    { title: 'Total Revenue', value: 'Rs. 7,845', icon: <FiDollarSign className="text-green-500" />, trend: { direction: 'up', value: '5.4%' } },
     { title: 'Total Orders', value: '1,234', icon: <FiShoppingCart className="text-blue-500" />, trend: { direction: 'up', value: '2.1%' } },
     { title: 'Total Customers', value: '345', icon: <FiUsers className="text-yellow-500" />, trend: { direction: 'down', value: '1.2%' } },
   ] as const;
 
   const recentOrders = [
-    { id: 'ORD001', customer: 'John Doe', total: '$150.00', status: 'Completed' },
-    { id: 'ORD002', customer: 'Jane Smith', total: '$75.50', status: 'Pending' },
-    { id: 'ORD003', customer: 'Mike Johnson', total: '$220.00', status: 'Completed' },
-    { id: 'ORD004', customer: 'Emily Brown', total: '$45.00', status: 'Cancelled' },
-    { id: 'ORD005', customer: 'Chris Lee', total: '$80.00', status: 'Pending' },
+    { id: 'ORD001', customer: 'John Doe', total: 'Rs. 150.00', status: 'Completed' },
+    { id: 'ORD002', customer: 'Jane Smith', total: 'Rs. 75.50', status: 'Pending' },
+    { id: 'ORD003', customer: 'Mike Johnson', total: 'Rs. 220.00', status: 'Completed' },
+    { id: 'ORD004', customer: 'Emily Brown', total: 'Rs. 45.00', status: 'Cancelled' },
+    { id: 'ORD005', customer: 'Chris Lee', total: 'Rs. 80.00', status: 'Pending' },
   ];
 
   return (

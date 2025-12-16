@@ -1,6 +1,8 @@
 'use client';
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { client } from '../../sanity/lib/client';
+import { getCodOrderCountForToday } from '../actions/actions';
 
 interface CartItem {
   id: string;
@@ -8,6 +10,9 @@ interface CartItem {
   price: number;
   quantity: number;
   image: string;
+  _type: 'product' | 'onsaleproducts';
+  discountPercentage?: number;
+  currentPrice?: number;
 }
 
 interface PaymentFormProps {
@@ -48,6 +53,7 @@ export default function PaymentForm({
 }: PaymentFormProps) {
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isCodDisabled, setIsCodDisabled] = useState(true); // Disable by default
   const [formData, setFormData] = useState<FormData>({
     fullName: '',
     email: '',
@@ -63,9 +69,22 @@ export default function PaymentForm({
   const [errors, setErrors] = useState<FormErrors>({});
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const sanitizeInput = (value: string): string => {
-    return value.replace(/[<>]/g, '').trim();
-  };
+  useEffect(() => {
+    async function checkCodLimit() {
+      const count = await getCodOrderCountForToday();
+      if (count >= 15) {
+        setIsCodDisabled(true);
+        // If COD was the default and is now disabled, switch to another method
+        setFormData(prev => ({
+          ...prev,
+          paymentMethod: 'easypaisa' 
+        }));
+      } else {
+        setIsCodDisabled(false);
+      }
+    }
+    checkCodLimit();
+  }, []);
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -76,7 +95,6 @@ export default function PaymentForm({
     const phoneRegex = /^(\+92|0)?3[0-9]{9}$/;
     return phoneRegex.test(phone.replace(/\s/g, ''));
   };
-
   const validateAccountNumber = (number: string): boolean => {
     const numberRegex = /^03[0-9]{9}$/;
     return numberRegex.test(number.replace(/\s/g, ''));
@@ -84,11 +102,19 @@ export default function PaymentForm({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    const sanitizedValue = sanitizeInput(value);
+    let processedValue = value;
+
+    // Always strip HTML tags for security
+    processedValue = processedValue.replace(/[<>]/g, '');
+
+    // Only trim for fields where it's explicitly desired (e.g., email, phone, but not full name or address)
+    if (name !== 'fullName' && name !== 'address') {
+      processedValue = processedValue.trim();
+    }
     
     setFormData(prev => ({
       ...prev,
-      [name]: sanitizedValue
+      [name]: processedValue
     }));
     
     if (errors[name]) {
@@ -157,38 +183,55 @@ export default function PaymentForm({
     setIsProcessing(true);
 
     try {
-      const orderData = {
-        customer: {
-          fullName: formData.fullName,
-          email: formData.email,
-          phone: formData.phone
-        },
-        shipping: {
-          address: formData.address,
-          city: formData.city,
-          province: formData.province,
-          postalCode: formData.postalCode
-        },
-        payment: {
-          method: formData.paymentMethod,
-          accountNumber: formData.accountNumber,
-          transactionId: formData.transactionId
-        },
-        items: cartItems,
-        pricing: {
-          subtotal,
-          shipping,
-          tax,
-          total
-        },
-        timestamp: new Date().toISOString()
+      const orderDocument = {
+        _type: 'order',
+        customerName: formData.fullName,
+        phone: formData.phone,
+        email: formData.email,
+        address: formData.address,
+        city: formData.city,
+        province: formData.province,
+        postalCode: formData.postalCode,
+        paymentMethod: formData.paymentMethod,
+        subtotal: subtotal,
+        shipping: shipping,
+        totalAmount: total,
+        orderStatus: 'pending',
+        orderItems: cartItems.map(item => {
+          const isDiscounted = item._type === 'onsaleproducts' && item.currentPrice !== undefined;
+          const priceToStore = isDiscounted ? item.currentPrice : item.price;
+          return {
+            _key: item.id,
+            product: {
+              _type: 'reference',
+              _ref: item.id,
+            },
+            quantity: item.quantity,
+            price: item.price, // Store original price
+            discountedPrice: priceToStore, // Store currentPrice or original price
+          };
+        }),
+        paymentDetails: (formData.paymentMethod === 'easypaisa' || formData.paymentMethod === 'jazzcash') 
+          ? {
+              _type: 'object',
+              accountNumber: formData.accountNumber,
+              transactionId: formData.transactionId,
+            }
+          : undefined,
       };
 
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await client.create(orderDocument);
 
-      console.log('Order placed:', orderData);
+      // Create a transaction to decrement inventory
+      const transaction = client.transaction();
+      cartItems.forEach(item => {
+        transaction.patch(item.id, {
+          dec: { inventory: item.quantity }
+        });
+      });
+      await transaction.commit();
 
-      // ✅ Call the callback to clear cart and update counter
+      // Call the callback to clear cart and update counter
       onOrderComplete();
 
       setShowSuccess(true);
@@ -198,8 +241,8 @@ export default function PaymentForm({
       }, 2000);
 
     } catch (error) {
-      console.error('Payment error:', error);
-      setErrors({ submit: 'Payment failed. Please try again.' });
+      console.error('Order submission error:', error);
+      setErrors({ submit: 'Failed to place order. Please try again.' });
     } finally {
       setIsProcessing(false);
     }
@@ -477,31 +520,33 @@ export default function PaymentForm({
           </label>
 
           {/* Cash on Delivery */}
-          <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-            formData.paymentMethod === 'cod' 
-              ? 'border-[#016B61] bg-[#9ECFD4]/10 shadow-md' 
-              : 'border-[#9ECFD4]/30 hover:border-[#016B61]/50'
-          }`}>
-            <input
-              type="radio"
-              name="paymentMethod"
-              value="cod"
-              checked={formData.paymentMethod === 'cod'}
-              onChange={handleInputChange}
-              className="w-5 h-5 text-[#016B61] focus:ring-[#016B61]"
-            />
-            <div className="ml-3 flex items-center gap-3 flex-1">
-              <div className="w-12 h-8 bg-gradient-to-br from-[#78B9B5] to-[#016B61] rounded flex items-center justify-center shadow-sm">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
+          {!isCodDisabled && (
+            <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+              formData.paymentMethod === 'cod' 
+                ? 'border-[#016B61] bg-[#9ECFD4]/10 shadow-md' 
+                : 'border-[#9ECFD4]/30 hover:border-[#016B61]/50'
+            }`}>
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="cod"
+                checked={formData.paymentMethod === 'cod'}
+                onChange={handleInputChange}
+                className="w-5 h-5 text-[#016B61] focus:ring-[#016B61]"
+              />
+              <div className="ml-3 flex items-center gap-3 flex-1">
+                <div className="w-12 h-8 bg-gradient-to-br from-[#78B9B5] to-[#016B61] rounded flex items-center justify-center shadow-sm">
+                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="font-semibold text-[#016B61]">Cash on Delivery</div>
+                  <div className="text-sm text-[#016B61]/70">Pay when you receive</div>
+                </div>
               </div>
-              <div>
-                <div className="font-semibold text-[#016B61]">Cash on Delivery</div>
-                <div className="text-sm text-[#016B61]/70">Pay when you receive</div>
-              </div>
-            </div>
-          </label>
+            </label>
+          )}
         </div>
 
         {/* Payment Details for Easypaisa/JazzCash */}

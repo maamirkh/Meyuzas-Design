@@ -1,3 +1,25 @@
-Type '{ children: Element; mode: "modal"; afterSignInRedirectUrl: string; asChild: true; }' is not assignable to type 'IntrinsicAttributes & Without<WithClerkProp<PropsWithChildren<SignInButtonProps>>, "clerk">'.
-  Property 'afterSignInRedirectUrl' does not exist on type 'IntrinsicAttributes & Without<SignInButtonPropsModal & Pick<SignInProps, "fallbackRedirectUrl" | "forceRedirectUrl" | ... 4 more ... | "oauthFlow"> & { ...; } & { ...; }, "clerk">'.ts(2322)
-(property) afterSignInRedirectUrl: string
+## Error Type
+Build Error
+
+## Error Message
+Parsing ecmascript source code failed
+
+## Build Output
+./app/admin_L5@X/products/edit/[slug]/EditProductForm.tsx:126:12
+Parsing ecmascript source code failed
+  124 |
+  125 | interface EditProductFormProps {
+> 126 |     product: Product;
+      |            ^
+  127 | }
+  128 |
+  129 | const EditProductForm: React.FC<EditProductFormProps> = ({ product }) => {
+
+Expected '</', got ':'
+
+Import trace:
+  Server Component:
+    ./app/admin_L5@X/products/edit/[slug]/EditProductForm.tsx
+    ./app/admin_L5@X/products/edit/[slug]/page.tsx
+
+Next.js version: 16.0.3 (Turbopack)

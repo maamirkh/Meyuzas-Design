@@ -18,13 +18,17 @@
 
 export interface Product {
   _id: string;
+  _type: "product" | "onsaleproducts";
   productName: string;
   price: number;
   inventory: number;
-  colors?: string[];  // ✅ Change from string to string[]
+  category: string;
+  colors?: string[];
   status?: string;
   description?: string;
-  slug: string;
+  slug: {
+    current: string;
+  };
   image?: {
     asset: {
       _ref: string;
@@ -33,5 +37,6 @@ export interface Product {
     _type: string;
   };
   rating?: number;
-  discount?: number;
+  discountPercentage?: number;
+  currentPrice?: number; // Add this line
 }

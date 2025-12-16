@@ -3,9 +3,9 @@ import { Product } from "../../types/product"
 import ProductCards from "./productCards";
 
 
-export default async function ProductsPage() {
+export default async function FetchSaleProductsPage() {
   const query = `
-    *[_type == "product" && defined(slug.current)] {
+    *[_type == "onsaleproducts" && defined(slug.current)] {
       _id,
       _type,
       productName,
@@ -16,7 +16,9 @@ export default async function ProductsPage() {
       status,
       slug,
       "image": image,
-      rating
+      rating,
+      discountPercentage,
+      currentPrice
     }
   `;
   const products: Product[] = await client.fetch(query);

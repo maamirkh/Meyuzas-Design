@@ -7,19 +7,24 @@ import AddToCartButton from "../components/addToCart";
 
 export default function ProductCards({ product }: { product: Product }) {
   const href = `/product/${product.slug.current}`;
-  console.log("Generated href:", href); // Debugging href
+  console.log("Generated href (sale):", href); // Debugging href
   return (
     <Link
       href={href}
       className="group relative block bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
     >
       {/* Badges */}
-      <div className="absolute top-3 right-3 z-10 flex gap-2">
+      {/* Discount Badge */}
+      <div className="absolute top-3 left-3 z-10">
         {product.discountPercentage && (
           <span className="bg-red-500 text-white px-3 py-1 text-sm rounded-full">
             -{product.discountPercentage}%
           </span>
         )}
+      </div>
+
+      {/* Heart Button */}
+      <div className="absolute top-3 right-3 z-10">
         <button className="p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-gray-100 transition-colors">
           <FiHeart className="w-5 h-5 text-gray-600" />
         </button>
@@ -30,7 +35,7 @@ export default function ProductCards({ product }: { product: Product }) {
         {product.image?.asset ? (
           <Image
             src={urlFor(product.image).url()}
-            alt={product.productName}
+            alt={product.productName || 'Product Image'}
             fill
             className="object-cover w-full h-full transition-transform group-hover:scale-105"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -58,10 +63,10 @@ export default function ProductCards({ product }: { product: Product }) {
 
         <div className="mt-4 flex items-center justify-between">
           <div className="space-y-1">
-            <span className="text-xl font-bold text-gray-900">Rs. {product.price}</span>
-            {product.discountPercentage && (
+            <span className="text-xl font-bold text-gray-900">Rs. {product.currentPrice?.toFixed(2)}</span>
+            {product.discountPercentage && ( // Only show original price if there's a discount
               <span className="block text-sm text-gray-500 line-through">
-                Rs. {(product.price * (1 + product.discountPercentage / 100)).toFixed(2)}
+                Rs. {product.price?.toFixed(2)}
               </span>
             )}
           </div>

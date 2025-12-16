@@ -13,8 +13,8 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const numericPrice = parseFloat(product.price.replace(/[^0-9.-]+/g, ""));
-  const numericOriginalPrice = product.originalPrice ? parseFloat(product.originalPrice.replace(/[^0-9.-]+/g, "")) : 0;
+  const numericPrice = parseFloat(product.price.replace("Rs. ", ""));
+  const numericOriginalPrice = product.originalPrice ? parseFloat(product.originalPrice.replace("Rs. ", "")) : 0;
 
   const discountPercentage = 
     (numericOriginalPrice > numericPrice) 
@@ -50,9 +50,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         
         {/* Pricing */}
         <div className="flex items-baseline gap-2 mb-3">
-          <p className="text-xl font-bold text-red-600">{product.price}</p>
+          <p className="text-xl font-bold text-red-600">Rs. {product.price}</p>
           {product.originalPrice && (
-            <p className="text-sm text-gray-500 line-through">{product.originalPrice}</p>
+            <p className="text-sm text-gray-500 line-through">Rs. {product.originalPrice}</p>
           )}
         </div>
         

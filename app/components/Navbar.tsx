@@ -15,8 +15,8 @@ export default function Navbar() {
 
   const navItems = [
     { name: 'Home', path: '/', ariaLabel: 'Go to home page' },
-    { name: 'Products', path: '/products', ariaLabel: 'Browse all products' },
-    { name: 'On Sale', path: '/on-sale', ariaLabel: 'View sale items' },
+    { name: 'Products', path: '/fetchProduct', ariaLabel: 'Browse all products' },
+    { name: 'On Sale', path: '/fetchSaleProducts', ariaLabel: 'View on sale items' },
     { name: 'About Us', path: '/about-us', ariaLabel: 'Learn about us' },
     { name: 'Contact Us', path: '/contact-us', ariaLabel: 'Contact us' }
   ];
@@ -173,16 +173,20 @@ export default function Navbar() {
                   </button>
                   {isUserMenuOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 ring-1 ring-black ring-opacity-5">
-                      <SignInButton mode="modal" afterSignInUrl="/" asChild>
-                        <button className="block w-full text-left px-4 py-2 text-sm text-black hover:bg-gray-100 transition-colors duration-150" onClick={() => setIsUserMenuOpen(false)}>
-                            Sign In
-                        </button>
-                      </SignInButton>
-                      <SignUpButton mode="modal" afterSignUpUrl="/" asChild>
-                        <button className="block w-full text-left px-4 py-2 text-sm text-black hover:bg-gray-100 transition-colors duration-150" onClick={() => setIsUserMenuOpen(false)}>
-                            Sign Up
-                        </button>
-                      </SignUpButton>
+                      <div onClick={() => setIsUserMenuOpen(false)}>
+                        <SignInButton mode="modal" fallbackRedirectUrl="/">
+                          <button className="block w-full text-left px-4 py-2 text-sm text-black hover:bg-gray-100 transition-colors duration-150">
+                              Sign In
+                          </button>
+                        </SignInButton>
+                      </div>
+                      <div onClick={() => setIsUserMenuOpen(false)}>
+                        <SignUpButton mode="modal" fallbackRedirectUrl="/">
+                          <button className="block w-full text-left px-4 py-2 text-sm text-black hover:bg-gray-100 transition-colors duration-150">
+                              Sign Up
+                          </button>
+                        </SignUpButton>
+                      </div>
                     </div>
                   )}
                 </div>

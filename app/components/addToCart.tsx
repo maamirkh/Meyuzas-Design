@@ -7,8 +7,36 @@ import Swal from "sweetalert2";
 export default function AddToCartButton({ product }: { product: Product }) {
   const { updateCartCount } = useCart(); // ✅ Get updateCartCount function
 
+  const isOutOfStock = product.inventory !== undefined && product.inventory <= 0;
+
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
+    
+    if (isOutOfStock) {
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: '<span style="color: #016B61; font-weight: 700;">Out of Stock!</span>',
+        html: `
+          <div style="text-align: center; padding: 10px;">
+            <p style="color: #016B61; font-size: 14px; margin-top: 8px;">
+              <strong style="color: #78B9B5;">${product.productName}</strong> is currently unavailable.
+            </p>
+          </div>
+        `,
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        toast: true,
+        background: '#ffffff',
+        customClass: {
+          popup: 'rounded-2xl shadow-2xl border-2 border-red-300',
+          title: 'text-lg',
+          htmlContainer: 'text-sm'
+        }
+      });
+      return;
+    }
     
     // Add product to cart
     addToCart(product);
@@ -44,9 +72,10 @@ export default function AddToCartButton({ product }: { product: Product }) {
   return (
     <button
       onClick={handleAddToCart}
-      className="px-6 py-3 relative bg-gradient-to-r from-[#9ECFD4] via-[#78B9B5] to-[#016B61] hover:from-[#78B9B5] hover:via-[#016B61] hover:to-[#9ECFD4] text-black rounded-xl font-bold text-base shadow-lg hover:shadow-xl transition-all duration-500 flex items-center justify-center group"
+      disabled={isOutOfStock}
+      className="px-6 py-3 relative bg-gradient-to-r from-[#9ECFD4] via-[#78B9B5] to-[#016B61] hover:from-[#78B9B5] hover:via-[#016B61] hover:to-[#9ECFD4] text-black rounded-xl font-bold text-base shadow-lg hover:shadow-xl transition-all duration-500 flex items-center justify-center group disabled:bg-slate-300 disabled:from-slate-300 disabled:via-slate-300 disabled:to-slate-300 disabled:text-slate-500 disabled:cursor-not-allowed"
     >
-      Add to Cart
+      {isOutOfStock ? "Out of Stock" : "Add to Cart"}
     </button>
   );
 }

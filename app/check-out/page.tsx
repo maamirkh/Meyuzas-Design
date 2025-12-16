@@ -15,6 +15,9 @@ interface CartItem {
   price: number;
   quantity: number;
   image: string;
+  _type: 'product' | 'onsaleproducts';
+  discountPercentage?: number;
+  currentPrice?: number;
 }
 
 export default function CheckoutPage() {
@@ -39,7 +42,9 @@ export default function CheckoutPage() {
           name: item.productName,
           price: Number(item.price) || 0,
           quantity: Number(item.inventory) || 1,
-          image: item.image?.asset ? urlFor(item.image).url() : '/placeholder.png' // ✅ Fixed
+          image: item.image?.asset ? urlFor(item.image).url() : '/placeholder.png', // ✅ Fixed
+          _type: item._type,
+          discountPercentage: item.discountPercentage,
         }));
 
         setCartItems(formattedItems);
@@ -63,7 +68,12 @@ export default function CheckoutPage() {
   const subtotal = cartItems.reduce((sum, item) => {
     const itemPrice = Number(item.price) || 0;
     const itemQty = Number(item.quantity) || 0;
-    return sum + (itemPrice * itemQty);
+    let priceToUse = itemPrice;
+
+    if (item._type === 'onsaleproducts' && item.currentPrice !== undefined) {
+      priceToUse = item.currentPrice;
+    }
+    return sum + (priceToUse * itemQty);
   }, 0);
   
   const shipping = subtotal > 0 ? 0 : 0;

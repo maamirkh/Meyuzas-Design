@@ -1,48 +1,52 @@
+"use client";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 import { Product } from "../../../types/product";
 import AddToCartButton from "../../components/addToCart";
 import { notFound } from "next/navigation";
-import { use } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
-  params: Promise<{
-    slug: string;
-  }>;
+  slug: string;
 }
 
-export async function generateStaticParams() {
-  const slugs = await client.fetch(
-    `*[_type in ["product", "onsaleproducts"] && defined(slug.current)].slug.current`
-  );
-  return slugs.filter(Boolean).map((slug: string) => ({
-    slug,
-  }));
-}
+export default function ProductDetails({ slug }: Props) {
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
 
-export default async function ProductPage({ params }: Props) {
-  const { slug } = await params;
+  useEffect(() => {
+    const query = `*[_type in ["product", "onsaleproducts"] && slug.current == $slug][0]{
+      _id,
+      _type,
+      productName,
+      price,
+      inventory,
+      colors,
+      status,
+      description,
+      "slug": slug.current,
+      "image": image,
+      discountPercentage,
+      currentPrice
+    }`;
 
-  const query = `*[_type in ["product", "onsaleproducts"] && slug.current == $slug][0]{
-    _id,
-    _type,
-    productName,
-    price,
-    inventory,
-    colors,
-    status,
-    description,
-    "slug": slug.current,
-    "image": image,
-    discountPercentage,
-    currentPrice
-  }`;
+    client.fetch(query, { slug }).then((data) => {
+      if (data) {
+        setProduct(data);
+      } else {
+        notFound();
+      }
+      setLoading(false);
+    });
+  }, [slug]);
 
-  const product: Product | null = await client.fetch(query, { slug });
+  if (loading) {
+    return <div>Loading...</div>; // Or a proper loading skeleton
+  }
 
   if (!product) {
-    notFound();
+    return notFound();
   }
 
   const displayPrice = product.currentPrice ?? product.price;

@@ -2,14 +2,14 @@ import CountdownTimer from '../components/CountdownTimer';
 import ProductCard from '../components/ProductCard';
 
 const saleProducts = [
-  { id: 1, name: 'Elegant High Heels', price: '$79.99', originalPrice: '$129.99', image: '/product1.png', isSale: true },
-  { id: 2, name: 'Vintage Leather Jacket', price: '$129.99', originalPrice: '$199.99', image: '/product2.png', isSale: true },
-  { id: 3, name: 'Classic Chronograph Watch', price: '$149.99', originalPrice: '$249.99', image: '/product3.png', isSale: true },
-  { id: 4, name: 'Designer Sunglasses', price: '$59.99', originalPrice: '$99.99', image: '/product4.png', isSale: true },
-  { id: 5, name: 'Silk Scarf', price: '$29.99', originalPrice: '$49.99', image: '/product1.png', isSale: true },
-  { id: 6, name: 'Leather Tote Bag', price: '$89.99', originalPrice: '$149.99', image: '/product2.png', isSale: true },
-  { id: 7, name: 'Cashmere Sweater', price: '$99.99', originalPrice: '$179.99', image: '/product3.png', isSale: true },
-  { id: 8, name: 'Suede Ankle Boots', price: '$119.99', originalPrice: '$189.99', image: '/product4.png', isSale: true },
+  { id: 1, name: 'Elegant High Heels', price: 'Rs. 79.99', originalPrice: 'Rs. 129.99', image: '/product1.png', isSale: true },
+  { id: 2, name: 'Vintage Leather Jacket', price: 'Rs. 129.99', originalPrice: 'Rs. 199.99', image: '/product2.png', isSale: true },
+  { id: 3, name: 'Classic Chronograph Watch', price: 'Rs. 149.99', originalPrice: 'Rs. 249.99', image: '/product3.png', isSale: true },
+  { id: 4, name: 'Designer Sunglasses', price: 'Rs. 59.99', originalPrice: 'Rs. 99.99', image: '/product4.png', isSale: true },
+  { id: 5, name: 'Silk Scarf', price: 'Rs. 29.99', originalPrice: 'Rs. 49.99', image: '/product1.png', isSale: true },
+  { id: 6, name: 'Leather Tote Bag', price: 'Rs. 89.99', originalPrice: 'Rs. 149.99', image: '/product2.png', isSale: true },
+  { id: 7, name: 'Cashmere Sweater', price: 'Rs. 99.99', originalPrice: 'Rs. 179.99', image: '/product3.png', isSale: true },
+  { id: 8, name: 'Suede Ankle Boots', price: 'Rs. 119.99', originalPrice: 'Rs. 189.99', image: '/product4.png', isSale: true },
 ];
 
 const SalePage = () => {
