@@ -9,6 +9,7 @@ interface ProductCardProps {
     originalPrice?: string;
     image: string;
     isSale?: boolean;
+    slug: string;
   };
 }
 
@@ -31,7 +32,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       )}
       
       {/* Product Image */}
-      <Link href={`/products/${product.id}`} className="block">
+      <Link href={`/product/${product.slug}`} className="block">
         <div className="relative w-full h-64 overflow-hidden">
           <Image 
             src={product.image} 

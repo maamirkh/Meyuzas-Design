@@ -13,7 +13,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.35.5",
+    "@clerk/nextjs": "^6.36.4",
+    "@clerk/themes": "^2.4.45",
     "@headlessui/react": "^2.2.9",
     "@sanity/image-url": "^2.0.1",
     "@sanity/vision": "^4.19.0",

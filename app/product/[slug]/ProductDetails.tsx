@@ -220,7 +220,7 @@ export default function ProductDetails({ slug }: Props) {
                     />
                   </svg>
                   <span className="text-sm font-medium">
-                    Free shipping on orders over Rs. 50
+                    
                   </span>
                 </div>
                 <div className="flex items-center gap-3 text-slate-700">
@@ -238,7 +238,7 @@ export default function ProductDetails({ slug }: Props) {
                     />
                   </svg>
                   <span className="text-sm font-medium">
-                    30-day money back guarantee
+                    
                   </span>
                 </div>
                 <div className="flex items-center gap-3 text-slate-700">

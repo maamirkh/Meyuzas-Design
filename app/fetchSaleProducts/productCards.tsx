@@ -75,7 +75,7 @@ export default function ProductCards({ product }: { product: Product }) {
           <AddToCartButton product={product} />
         </div>
 
-        {product.status === "out-of-stock" && (
+        {product.inventory !== undefined && product.inventory <= 0 && (
           <div className="mt-3 text-sm text-red-600">Out of Stock</div>
         )}
       </div>

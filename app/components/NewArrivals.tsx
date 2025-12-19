@@ -1,10 +1,9 @@
-'use client';
-import { useState, useRef } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import useIntersectionObserver from '../hooks/useIntersectionObserver';
+import { client } from '@/sanity/lib/client';
+import { Product } from '../../types/product';
+import { urlFor } from '@/sanity/lib/image';
+import NewArrivalsClient from './NewArrivalsClient';
 
-interface Product {
+interface NewArrivalProduct {
   id: number;
   name: string;
   rating: number;
@@ -15,202 +14,53 @@ interface Product {
   slug: string;
 }
 
-const products: Product[] = [
-  {
-    id: 1,
-    name: "T-shirt with Tape Details",
-    rating: 5,
-    reviews: 1450,
-    price: 120,
-    originalPrice: null,
-    image: "/product1.png",
-    slug: "t-shirt-tape-details"
-  },
-  {
-    id: 2,
-    name: "Sidony Fit Jeans", 
-    rating: 4,
-    reviews: 1300,
-    price: 240,
-    originalPrice: 260,
-    image: "/product2.png",
-    slug: "sidony-fit-jeans"
-  },
-  {
-    id: 3,
-    name: "Checkered Shirt",
-    rating: 5, 
-    reviews: 1400,
-    price: 180,
-    originalPrice: null,
-    image: "/product3.png",
-    slug: "checkered-shirt"
-  },
-  {
-    id: 4,
-    name: "Sleeve Striped T-shirt",
-    rating: 5,
-    reviews: 1400,
-    price: 130,
-    originalPrice: 160, 
-    image: "/product4.png",
-    slug: "sleeve-striped-t-shirt"
-  }
-];
+async function getNewArrivalsData(): Promise<NewArrivalProduct[]> {
+  const query = `
+    *[_type == "product" && defined(slug.current)] {
+      _id,
+      _type,
+      productName,
+      description,
+      price,
+      inventory,
+      colors,
+      status,
+      slug,
+      "image": image,
+      rating,
+      discountPercentage
+    } | order(_createdAt desc)[0..3]
+  `;
+  const sanityProducts: any[] = await client.fetch(query); // Using any since the query returns various fields
 
-export default function NewArrivals() {
-  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
-  const sectionRef = useRef<HTMLElement>(null);
-  const isVisible = useIntersectionObserver(sectionRef, { threshold: 0.1, triggerOnce: true });
+  // Map the Sanity product data to the expected format for the client component
+  return sanityProducts.map((product: any, index) => {
+    let imageUrl = '/placeholder-product.jpg';
+    try {
+      if (product.image?.asset?._ref) {
+        imageUrl = urlFor(product.image).url();
+      }
+    } catch (error) {
+      console.error('Error generating image URL for product:', product._id, error);
+    }
 
-  const handleImageLoad = (id: number) => {
-    setLoadedImages(prev => new Set(prev).add(id));
-  };
+    return {
+      id: index + 1,
+      name: product.productName || 'Unknown Product',
+      rating: product.rating || 0,
+      reviews: 0, // Reviews are not available in the Sanity schema
+      price: product.price || 0,
+      originalPrice: product.discountPercentage
+        ? Math.round(product.price * (1 + product.discountPercentage / 100))
+        : null,
+      image: imageUrl,
+      slug: product.slug?.current || 'unknown'
+    };
+  });
+}
 
-  const renderStars = (rating: number, productName: string) => {
-    return (
-      <div className="flex items-center gap-1" role="img" aria-label={`${rating} out of 5 stars`}>
-        {[1, 2, 3, 4, 5].map((star) => (
-          <span 
-            key={star} 
-            className={`text-sm ${star <= rating ? 'text-yellow-400' : 'text-gray-300'}`}
-            aria-hidden="true"
-          >
-            ★
-          </span>
-        ))}
-      </div>
-    );
-  };
+export default async function NewArrivals() {
+  const products = await getNewArrivalsData();
 
-  const calculateDiscount = (price: number, originalPrice: number) => {
-    return Math.round(((originalPrice - price) / originalPrice) * 100);
-  };
-
-  return (
-    <section 
-      ref={sectionRef}
-      className={`bg-[#9ECFD4] py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 scroll-animate ${isVisible ? 'is-visible' : ''} border border-transparent`}
-    >
-      <div className="max-w-6xl mx-auto">
-        
-        {/* Section Header */}
-        <div className="text-center mb-6 sm:mb-8 lg:mb-12">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 sm:mb-3">
-            NEW ARRIVALS
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base">
-            Discover our latest collection of trendy and fashionable clothing
-          </p>
-        </div>
-
-        {/* Products Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-8 sm:mb-10">
-          {products.map((product) => (
-            <article 
-              key={product.id}
-              className="group relative bg-white rounded-xl transition-all duration-500 hover:transform hover:scale-105"
-            >
-              <Link href={`/products/${product.slug}`} className="block">
-                <div className="relative overflow-hidden rounded-xl border border-gray-100 hover:border-gray-200 transition-all duration-300 shadow-sm hover:shadow-md">
-                  
-                  {/* Product Image */}
-                  <div className="relative bg-gray-50 rounded-xl">
-                    <div className="relative w-full h-64 sm:h-72 lg:h-80 overflow-hidden rounded-xl">
-                      <Image 
-                        src={product.image} 
-                        alt={`${product.name} - Available at Meyuza's Design`}
-                        fill
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                        quality={75}
-                        className="object-cover transition-all duration-700 group-hover:scale-110 rounded-xl"
-                        onLoad={() => handleImageLoad(product.id)}
-                        loading="lazy"
-                        unoptimized
-                      />
-                      
-                      {/* Loading Skeleton */}
-                      {!loadedImages.has(product.id) && (
-                        <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-xl" aria-hidden="true"></div>
-                      )}
-                    </div>
-                    
-                    {/* Hover Overlay */}
-                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-5 transition-all duration-300 rounded-xl" aria-hidden="true"></div>
-                    
-                    {/* Discount Badge */}
-                    {product.originalPrice && (
-                      <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-lg shadow-lg">
-                        -{calculateDiscount(product.price, product.originalPrice)}%
-                      </div>
-                    )}
-                    
-                    {/* Wishlist Button */}
-                    <button 
-                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white rounded-full p-1.5 shadow-lg hover:bg-gray-50"
-                      aria-label={`Add ${product.name} to wishlist`}
-                      type="button"
-                    >
-                      <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                      </svg>
-                    </button>
-                  </div>
-
-                  {/* Product Info */}
-                  <div className="p-2 sm:p-3 lg:p-4 space-y-1 sm:space-y-2">
-                    <h3 className="font-semibold text-gray-900 text-xs sm:text-sm leading-tight group-hover:text-black transition-colors duration-200 line-clamp-2">
-                      {product.name}
-                    </h3>
-
-                    {/* Rating */}
-                    <div className="flex items-center gap-1 sm:gap-2">
-                      {renderStars(product.rating, product.name)}
-                      <span className="text-xs text-gray-600">
-                        ({product.reviews.toLocaleString()})
-                      </span>
-                    </div>
-
-                    {/* Price */}
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm sm:text-base font-bold text-gray-900">
-                        Rs. {product.price}
-                      </span>
-                      {product.originalPrice && (
-                        <>
-                          <span className="text-xs sm:text-sm text-gray-500 line-through">
-                            Rs. {product.originalPrice}
-                          </span>
-                        </>
-                      )}
-                    </div>
-
-                    {/* Add to Cart Button */}
-                    <button 
-                      className="w-full bg-black text-white py-2 rounded-lg font-medium text-xs sm:text-sm opacity-0 group-hover:opacity-100 transform translate-y-3 group-hover:translate-y-0 transition-all duration-300 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-1"
-                      aria-label={`Add ${product.name} to cart`}
-                      type="button"
-                    >
-                      Add to Cart
-                    </button>
-                  </div>
-                </div>
-              </Link>
-            </article>
-          ))}
-        </div>
-
-        {/* View All Button */}
-        <div className="text-center">
-          <Link
-            href="/products"
-            className="inline-block border-2 border-gray-800 text-gray-800 px-6 sm:px-8 py-2 sm:py-3 rounded-full font-medium text-sm sm:text-base hover:bg-[#014a43] hover:text-white transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
-            aria-label="View all products"
-          >
-            View All
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
+  return <NewArrivalsClient products={products} />;
 }

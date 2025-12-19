@@ -116,14 +116,6 @@ const CartPage = () => {
             </div>
             <span style="color: #016B61; font-weight: 600;">Secure Payment Gateway</span>
           </div>
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="background: #016B61; padding: 8px; border-radius: 50%;">
-              <svg style="width: 20px; height: 20px; color: white;" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-              </svg>
-            </div>
-            <span style="color: #016B61; font-weight: 600;">Free Express Delivery</span>
-          </div>
         </div>
         <p style="color: #016B61; margin-top: 16px; font-size: 14px;">Total Amount: <strong style="color: #78B9B5; font-size: 18px;">Rs. ${calculateTotal().toFixed(2)}</strong></p>
       `,
@@ -206,7 +198,6 @@ const CartPage = () => {
           <div className="flex flex-wrap gap-3 mt-6">
             {[
               { icon: FiShield, text: "Secure Checkout", color: "[#016B61]" },
-              { icon: FiTruck, text: "Free Shipping", color: "[#78B9B5]" },
               { icon: FiPercent, text: "Best Prices", color: "[#9ECFD4]" }
             ].map((badge, i) => (
               <div key={i} className={`flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-${badge.color} animate-fade-in`} style={{ animationDelay: `${i * 100}ms` }}>
@@ -352,16 +343,9 @@ const CartPage = () => {
                         <span className="text-[#016B61] font-medium">Subtotal ({cartItems.length} items)</span>
                         <span className="font-bold text-[#016B61]">Rs. {calculateSubtotal().toFixed(2)}</span>
                       </div>
-                      <div className="flex justify-between items-center p-4 bg-[#78B9B5]/10 rounded-xl border border-[#78B9B5]/30">
-                        <span className="text-[#016B61] font-medium flex items-center gap-2">
-                          <FiTruck className="w-4 h-4" />
-                          Shipping
-                        </span>
-                        <span className="font-bold text-[#016B61]">FREE</span>
-                      </div>
-                      
+
                       {/* Total */}
-                      <div className="pt-4 border-t-2 border-[#9ECFD4]/30">
+                      <div className="border-t-2 border-[#9ECFD4]/30">
                         <div className="flex justify-between items-center p-4 bg-gradient-to-r from-[#9ECFD4]/20 to-[#78B9B5]/20 rounded-2xl border-2 border-[#78B9B5]/30">
                           <span className="text-xl font-black text-[#016B61]">Total</span>
                           <div className="text-right">
@@ -390,7 +374,6 @@ const CartPage = () => {
                   <div className="space-y-3">
                     {[
                       { icon: FiShield, text: "100% Secure Payments", color: "[#016B61]" },
-                      { icon: FiTruck, text: "Free Express Delivery", color: "[#78B9B5]" },
                       { icon: FiPercent, text: "Best Price Guarantee", color: "[#9ECFD4]" },
                       { icon: FiStar, text: "Rated 4.9/5 by Customers", color: "[#016B61]" }
                     ].map((item, index) => (

@@ -6,7 +6,7 @@ import FloatingWhatsApp from './components/FloatingWhatsApp';
 import { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { CartProvider } from "./context/CartContext";
-import { ClerkProvider } from '@clerk/nextjs';
+import Providers from './providers';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -96,49 +96,49 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
-        <head>
-          {/* Structured Data for SEO */}
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                '@context': 'https://schema.org',
-                '@type': 'ClothingStore',
-                name: 'Meyuza\'s Design',
-                description: 'Fashionable and trendy clothing for everyone',
-                url: 'https://meyuzas-design.com',
-                logo: 'https://meyuzas-design.com/Meyuza\'s Logo.png',
-                address: {
-                  '@type': 'PostalAddress',
-                  addressCountry: 'PK'
-                },
-                openingHoursSpecification: {
-                  '@type': 'OpeningHoursSpecification',
-                  dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-                  opens: '00:00',
-                  closes: '23:59'
-                },
-                priceRange: '$$',
-                aggregateRating: {
-                  '@type': 'AggregateRating',
-                  ratingValue: '4.8',
-                  reviewCount: '10000'
-                }
-              })
-            }}
-          />
-        </head>
-        <body className={`${poppins.className} antialiased text-gray-900 min-h-screen flex flex-col`}>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Structured Data for SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'ClothingStore',
+              name: 'Meyuza\'s Design',
+              description: 'Fashionable and trendy clothing for everyone',
+              url: 'https://meyuzas-design.com',
+              logo: 'https://meyuzas-design.com/Meyuza\'s Logo.png',
+              address: {
+                '@type': 'PostalAddress',
+                addressCountry: 'PK'
+              },
+              openingHoursSpecification: {
+                '@type': 'OpeningHoursSpecification',
+                dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                opens: '00:00',
+                closes: '23:59'
+              },
+              priceRange: '$$',
+              aggregateRating: {
+                '@type': 'AggregateRating',
+                ratingValue: '4.8',
+                reviewCount: '10000'
+              }
+            })
+          }}
+        />
+      </head>
+      <body className={`${poppins.className} antialiased text-gray-900 min-h-screen flex flex-col`}>
+        <Providers>
           <CartProvider>
             <Navbar />
             <main className="flex-grow">{children}</main>
           </CartProvider>
           <Footer />
           <FloatingWhatsApp />
-        </body>
-      </html>
-    </ClerkProvider>
+        </Providers>
+      </body>
+    </html>
   );
 }

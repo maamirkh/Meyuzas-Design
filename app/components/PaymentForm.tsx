@@ -22,6 +22,7 @@ interface PaymentFormProps {
   tax: number;
   total: number;
   onOrderComplete: () => void; // ✅ Added callback prop
+  onProvinceChange?: (province: string) => void; // Added optional province change handler
 }
 
 type PaymentMethod = 'easypaisa' | 'jazzcash' | 'cod';
@@ -43,13 +44,14 @@ interface FormErrors {
   [key: string]: string;
 }
 
-export default function PaymentForm({ 
-  cartItems, 
-  subtotal, 
-  shipping, 
-  tax, 
+export default function PaymentForm({
+  cartItems,
+  subtotal,
+  shipping,
+  tax,
   total,
-  onOrderComplete // ✅ Receive callback
+  onOrderComplete, // ✅ Receive callback
+  onProvinceChange // ✅ Receive province change handler
 }: PaymentFormProps) {
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -111,12 +113,17 @@ export default function PaymentForm({
     if (name !== 'fullName' && name !== 'address') {
       processedValue = processedValue.trim();
     }
-    
+
     setFormData(prev => ({
       ...prev,
       [name]: processedValue
     }));
-    
+
+    // Call province change handler when province changes
+    if (name === 'province' && onProvinceChange) {
+      onProvinceChange(processedValue);
+    }
+
     if (errors[name]) {
       setErrors(prev => {
         const newErrors = { ...prev };

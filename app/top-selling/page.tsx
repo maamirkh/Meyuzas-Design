@@ -229,7 +229,7 @@ export default function TopSellingPage() {
                 key={product.id}
                 className="group relative bg-white rounded-xl transition-all duration-500 hover:transform hover:scale-105"
               >
-                <Link href={`/products/${product.slug}`} className="block">
+                <Link href={`/product/${product.slug}`} className="block">
                   <div className="relative overflow-hidden rounded-xl border border-gray-100 hover:border-gray-200 transition-all duration-300 shadow-sm hover:shadow-md">
                     
                     {/* Product Image */}

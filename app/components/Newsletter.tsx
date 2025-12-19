@@ -1,5 +1,6 @@
 'use client';
 import { useState, useRef } from 'react';
+import { subscribeToNewsletter } from '@/app/actions/newsletterActions';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 
 export default function Newsletter() {
@@ -11,34 +12,42 @@ export default function Newsletter() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email || !email.includes('@')) {
       setMessage('Please enter a valid email address');
       return;
     }
 
     setIsSubmitting(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      setMessage('Thank you for subscribing!');
-      setEmail('');
+
+    try {
+      const result = await subscribeToNewsletter(email);
+
+      if (result.success) {
+        setMessage(result.message);
+        setEmail('');
+      } else {
+        setMessage(result.message);
+      }
+    } catch (error) {
+      setMessage('There was an unexpected error. Please try again.');
+    } finally {
       setIsSubmitting(false);
-      
-      // Clear message after 3 seconds
-      setTimeout(() => setMessage(''), 3000);
-    }, 1000);
+
+      // Clear message after 5 seconds
+      setTimeout(() => setMessage(''), 5000);
+    }
   };
 
   return (
-    <section 
+    <section
       ref={sectionRef}
       className={`bg-[#9ECFD4] py-8 sm:py-12 px-4 sm:px-6 lg:px-8 scroll-animate ${isVisible ? 'is-visible' : ''} border border-transparent`}
     >
       <div className="max-w-6xl mx-auto">
         <div className="bg-black text-white py-6 sm:py-8 lg:py-12 px-4 sm:px-6 lg:px-8 rounded-2xl shadow-2xl">
           <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-6 lg:gap-12">
-            
+
             {/* Left Side - Text Content */}
             <div className="flex-1 text-center lg:text-left">
               <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2 sm:mb-3 leading-tight">
@@ -54,17 +63,17 @@ export default function Newsletter() {
             {/* Right Side - Email Form */}
             <div className="flex-1 w-full max-w-md">
               <form onSubmit={handleSubmit} className="space-y-3">
-                
+
                 {/* Email Input */}
                 <div className="relative">
                   <label htmlFor="newsletter-email" className="sr-only">
                     Email address
                   </label>
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <svg 
-                      className="h-4 w-4 text-gray-400" 
-                      fill="none" 
-                      viewBox="0 0 24 24" 
+                    <svg
+                      className="h-4 w-4 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
                       stroke="currentColor"
                       aria-hidden="true"
                     >
@@ -83,9 +92,9 @@ export default function Newsletter() {
                     aria-label="Email address for newsletter"
                   />
                 </div>
-                
+
                 {/* Subscribe Button */}
-                <button 
+                <button
                   type="submit"
                   disabled={isSubmitting}
                   className="w-full bg-white text-black px-6 py-3 rounded-xl font-semibold text-sm hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
@@ -106,10 +115,10 @@ export default function Newsletter() {
 
                 {/* Success/Error Message */}
                 {message && (
-                  <div 
+                  <div
                     className={`text-sm text-center py-2 px-4 rounded-lg transition-all duration-300 ${
-                      message.includes('Thank you') 
-                        ? 'bg-green-100 text-green-800' 
+                      message.includes('Thank you') || message.includes('reactivated')
+                        ? 'bg-green-100 text-green-800'
                         : 'bg-red-100 text-red-800'
                     }`}
                     role="alert"

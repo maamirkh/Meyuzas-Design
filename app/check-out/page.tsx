@@ -25,6 +25,7 @@ export default function CheckoutPage() {
   const { updateCartCount } = useCart();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [province, setProvince] = useState<string>('');
 
   useEffect(() => {
     const loadCartItems = () => {
@@ -75,9 +76,11 @@ export default function CheckoutPage() {
     }
     return sum + (priceToUse * itemQty);
   }, 0);
-  
-  const shipping = subtotal > 0 ? 0 : 0;
-  const tax = 0;
+
+  const tax = 0; // Tax remains 0 as before
+
+  // Calculate shipping and total based on province state
+  const shipping = province && province.toLowerCase() === 'sindh' ? 500 : province ? 1000 : 0;
   const total = subtotal + shipping;
 
   if (isLoading) {
@@ -135,13 +138,14 @@ export default function CheckoutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Left: Payment Form */}
           <div className="lg:col-span-2">
-            <PaymentForm 
+            <PaymentForm
               cartItems={cartItems}
               subtotal={subtotal}
               shipping={shipping}
               tax={tax}
               total={total}
               onOrderComplete={handleOrderComplete}
+              onProvinceChange={setProvince}
             />
           </div>
 

@@ -12,18 +12,18 @@ export default function Footer() {
       { name: 'Terms & Conditions', href: '/terms-conditions', ariaLabel: 'Read terms and conditions' }
     ],
     resources: [
-      { name: 'Facebook', href: 'https://www.facebook.com/share/1Bo2uSDNXc/', icon: 'facebook', ariaLabel: 'Visit our Facebook page' },
-      { name: 'Instagram', href: 'https://www.instagram.com/meyuzas?igsh=dnA3c29idTRwNGpp&utm_source=qr', icon: 'instagram', ariaLabel: 'Visit our Instagram profile' },
-      { name: 'WhatsApp', href: 'https://wa.me/923122401741 ', icon: 'whatsapp', ariaLabel: 'Chat with us on WhatsApp' },
+      { name: 'Facebook', href: 'https://www.facebook.com/meyuza85?rdid=Y5eciwGgcURUg02g&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1Bo2uSDNXc%2F#', icon: 'facebook', ariaLabel: 'Visit our Facebook page' },
+      { name: 'Instagram', href: 'https://www.instagram.com/meyuzas/?utm_source=qr#', icon: 'instagram', ariaLabel: 'Visit our Instagram profile' },
+      { name: 'WhatsApp', href: 'https://wa.me/+923122401741', icon: 'whatsapp', ariaLabel: 'Chat with us on WhatsApp' },
       { name: 'YouTube Playlist', href: 'https://youtube.com/@meyuzasdesign?si=_3-qdvM0JNZvvhKo', icon: 'youtube', ariaLabel: 'Watch our YouTube videos' }
     ]
   };
 
   const socialMedia = [
-    { name: 'Facebook', href: 'https://facebook.com', icon: 'facebook', ariaLabel: 'Follow us on Facebook' },
-    { name: 'Instagram', href: 'https://instagram.com', icon: 'instagram', ariaLabel: 'Follow us on Instagram' },
+    { name: 'Facebook', href: 'https://www.facebook.com/meyuza85?rdid=Y5eciwGgcURUg02g&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1Bo2uSDNXc%2F#', icon: 'facebook', ariaLabel: 'Follow us on Facebook' },
+    { name: 'Instagram', href: 'https://www.instagram.com/meyuzas/?utm_source=qr#', icon: 'instagram', ariaLabel: 'Follow us on Instagram' },
     { name: 'Twitter', href: 'https://twitter.com', icon: 'twitter', ariaLabel: 'Follow us on Twitter' },
-    { name: 'WhatsApp', href: 'https://wa.me/923122401741 ', icon: 'whatsapp', ariaLabel: 'Chat with us on WhatsApp' }
+    { name: 'WhatsApp', href: 'https://wa.me/+923122401741', icon: 'whatsapp', ariaLabel: 'Chat with us on WhatsApp' }
   ];
 
   const getSocialIcon = (iconName: string) => {

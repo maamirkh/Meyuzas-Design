@@ -10,17 +10,17 @@ export default function Hero() {
   // Slider folder se images - aapke public/slider/ folder ki images
   const rotationImages = [
     '/slider/1.jpg',
-    '/slider/2.jpg', 
+    '/slider/2.jpg',
     '/slider/3.jpg',
     '/slider/4.jpg'
   ];
 
   useEffect(() => {
     setIsVisible(true);
-    
+
     // Auto rotation every 3 seconds
     const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => 
+      setCurrentImageIndex((prevIndex) =>
         prevIndex === rotationImages.length - 1 ? 0 : prevIndex + 1
       );
     }, 3000);
@@ -32,14 +32,14 @@ export default function Hero() {
     <section className="relative bg-[#9ECFD4] overflow-hidden border border-transparent">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-24">
-          
+
           {/* Left Content */}
           <div className={`flex-1 text-center lg:text-left space-y-4 sm:space-y-6 lg:space-y-8 order-2 lg:order-1 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            
+
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full text-xs sm:text-sm font-medium shadow-lg">
               <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse" aria-hidden="true"></span>
-              50% off on your first order
+              <h1></h1>
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight">
               Wear{' '}
@@ -51,20 +51,20 @@ export default function Hero() {
 
             {/* Description */}
             <p className="text-base sm:text-lg lg:text-xl text-gray-700 max-w-2xl leading-relaxed mx-auto lg:mx-0">
-              Discover the latest trends in clothing. From casual to formal, we have it all. 
+              Discover the latest trends in clothing. From casual to formal, we have it all.
               Shop now and get 50% off on your first order!
             </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
-              <Link 
+              <Link
                 href="/products"
                 className="bg-black text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-[#014a43] transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 text-center"
                 aria-label="Order products now"
               >
                 Order Now →
               </Link>
-              
+
               <Link
                 href="/products"
                 className="border-2 border-gray-700 text-gray-800 hover:text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-[#014a43] transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 text-center"
@@ -110,12 +110,12 @@ export default function Hero() {
                     className="object-cover"
                     priority={index === 0}
                   />
-                  
+
                   {/* Overlay for better text visibility */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                 </div>
               ))}
-              
+
               {/* Image indicators */}
               <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
                 {rotationImages.map((_, index) => (
@@ -123,8 +123,8 @@ export default function Hero() {
                     key={index}
                     onClick={() => setCurrentImageIndex(index)}
                     className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      index === currentImageIndex 
-                        ? 'bg-white scale-125' 
+                      index === currentImageIndex
+                        ? 'bg-white scale-125'
                         : 'bg-white/50 hover:bg-white/80'
                     }`}
                     aria-label={`Go to image ${index + 1}`}

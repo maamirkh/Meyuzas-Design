@@ -5,7 +5,17 @@ export default function products () {
 
   return (
     <div>
+      <div className="text-center mb-6 sm:mb-8 lg:mb-12 mt-6">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 sm:mb-3">
+            NEW ARRIVALS
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base">
+            Discover our latest collection of trendy and fashionable clothing
+          </p>
+        </div>
+    <div>
         <ProductsPage/>
+    </div>
     </div>
   )
 }

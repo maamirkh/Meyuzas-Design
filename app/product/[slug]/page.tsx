@@ -107,15 +107,15 @@ export default async function ProductPage({ params }: Props) {
                 <h1 className="text-4xl font-black text-slate-900 mb-2">
                   {product.productName}
                 </h1>
-                {product.status && (
+                {product.inventory !== undefined && (
                   <span
                     className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${
-                      product.status === "in-stock"
+                      product.inventory > 0
                         ? "bg-green-100 text-green-800"
                         : "bg-red-100 text-red-800"
                     }`}
                   >
-                    {product.status === "in-stock"
+                    {product.inventory > 0
                       ? "✓ In Stock"
                       : "✗ Out of Stock"}
                   </span>
@@ -216,7 +216,7 @@ export default async function ProductPage({ params }: Props) {
                     />
                   </svg>
                   <span className="text-sm font-medium">
-                    Free shipping on orders over Rs. 50
+                  
                   </span>
                 </div>
                 <div className="flex items-center gap-3 text-slate-700">
@@ -234,7 +234,7 @@ export default async function ProductPage({ params }: Props) {
                     />
                   </svg>
                   <span className="text-sm font-medium">
-                    30-day money back guarantee
+                      Fast Delivery
                   </span>
                 </div>
                 <div className="flex items-center gap-3 text-slate-700">

@@ -2,8 +2,10 @@ import { type SchemaTypeDefinition } from 'sanity'
 import {productSchema} from "./productSchema"
 import order from './orderSchema'
 import {onSaleProductSchema} from "./onSaleProductSchema" // Import new schema
+import {newsletterSubscriptionSchema} from "./newsletterSubscriptionSchema" // Import new schema
+import {contactMessageSchema} from "./contactMessageSchema" // Import new schema
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [productSchema, order, onSaleProductSchema], // Add new schema here
+  types: [productSchema, order, onSaleProductSchema, newsletterSubscriptionSchema, contactMessageSchema], // Add new schema here
 }
 

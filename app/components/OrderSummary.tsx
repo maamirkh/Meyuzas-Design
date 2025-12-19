@@ -20,7 +20,7 @@ interface OrderSummaryProps {
 }
 
 export default function OrderSummary({ cartItems, subtotal, shipping }: OrderSummaryProps) {
-  // Calculate total without tax
+  // Calculate total without tax but including shipping
   const finalTotal = subtotal + shipping;
 
   return (
@@ -76,7 +76,7 @@ export default function OrderSummary({ cartItems, subtotal, shipping }: OrderSum
           <span className="text-[#016B61] font-medium">Subtotal</span>
           <span className="font-semibold text-[#016B61]">Rs. {subtotal.toFixed(2)}</span>
         </div>
-        
+
         <div className="flex justify-between text-sm p-3 bg-[#78B9B5]/10 rounded-lg border border-[#78B9B5]/30">
           <span className="text-[#016B61] font-medium flex items-center gap-2">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -84,9 +84,9 @@ export default function OrderSummary({ cartItems, subtotal, shipping }: OrderSum
             </svg>
             Shipping
           </span>
-          <span className="font-semibold">
+          <span className="font-semibold text-[#016B61]">
             {shipping === 0 ? (
-              <span className="text-[#016B61] font-bold">FREE</span>
+              <span className="text-[#016B61] font-bold">-</span>
             ) : (
               `Rs. ${shipping.toFixed(2)}`
             )}
@@ -94,7 +94,7 @@ export default function OrderSummary({ cartItems, subtotal, shipping }: OrderSum
         </div>
       </div>
 
-      {/* Total - Without Tax */}
+      {/* Total - Including Shipping */}
       <div className="flex justify-between items-center mt-4 mb-6 p-4 bg-gradient-to-r from-[#9ECFD4]/20 to-[#78B9B5]/20 rounded-2xl border-2 border-[#78B9B5]/30">
         <span className="text-lg font-bold text-[#016B61]">Total</span>
         <span className="text-3xl font-black text-[#016B61]">Rs. {finalTotal.toFixed(2)}</span>
