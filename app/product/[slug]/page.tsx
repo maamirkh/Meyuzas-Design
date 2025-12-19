@@ -140,7 +140,7 @@ export default async function ProductPage({ params }: Props) {
                     <span className="text-5xl font-black bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                                               Rs. {displayPrice?.toFixed(2)}
                                             </span>                  )}
-                  <span className="text-slate-500 text-lg">USD</span>
+                  <span className="text-slate-500 text-lg"></span>
                 </div>
               </div>
 
@@ -216,7 +216,7 @@ export default async function ProductPage({ params }: Props) {
                     />
                   </svg>
                   <span className="text-sm font-medium">
-                  
+                    Buy Now
                   </span>
                 </div>
                 <div className="flex items-center gap-3 text-slate-700">
