@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { Metadata } from 'next';
 
 interface Product {
   id: number;
@@ -235,10 +234,11 @@ export default function TopSellingPage() {
                     {/* Product Image */}
                     <div className="relative bg-gray-50 rounded-xl">
                       <div className="relative w-full h-64 sm:h-72 lg:h-80 overflow-hidden rounded-xl">
-                        <img 
+                        <Image 
                           src={product.image} 
                           alt={`${product.name} - Top selling at Meyuza's Design`}
-                          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 rounded-xl"
+                          fill
+                          className="object-cover transition-all duration-700 group-hover:scale-110 rounded-xl"
                           onLoad={() => handleImageLoad(product.id)}
                           loading="lazy"
                         />

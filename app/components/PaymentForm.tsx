@@ -19,7 +19,6 @@ interface PaymentFormProps {
   cartItems: CartItem[];
   subtotal: number;
   shipping: number;
-  tax: number;
   total: number;
   onOrderComplete: () => void; // ✅ Added callback prop
   onProvinceChange?: (province: string) => void; // Added optional province change handler
@@ -48,7 +47,6 @@ export default function PaymentForm({
   cartItems,
   subtotal,
   shipping,
-  tax,
   total,
   onOrderComplete, // ✅ Receive callback
   onProvinceChange // ✅ Receive province change handler

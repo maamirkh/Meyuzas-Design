@@ -142,7 +142,6 @@ export default function CheckoutPage() {
               cartItems={cartItems}
               subtotal={subtotal}
               shipping={shipping}
-              tax={tax}
               total={total}
               onOrderComplete={handleOrderComplete}
               onProvinceChange={setProvince}
@@ -155,7 +154,6 @@ export default function CheckoutPage() {
               cartItems={cartItems}
               subtotal={subtotal}
               shipping={shipping}
-              tax={tax}
               total={total}
             />
           </div>

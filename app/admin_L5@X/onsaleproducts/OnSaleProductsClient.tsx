@@ -2,7 +2,6 @@
 
 import React, { useTransition } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { urlFor } from '../../../sanity/lib/image';
 import { deleteOnSaleProduct } from './actions';
 import Link from 'next/link';
@@ -14,7 +13,6 @@ interface OnSaleProductsClientProps {
 }
 
 const OnSaleProductsClient: React.FC<OnSaleProductsClientProps> = ({ products }) => {
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const handleDelete = (productId: string) => {

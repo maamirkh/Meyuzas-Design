@@ -24,7 +24,7 @@ export default function TopSellingClient({ products }: { products: ProductProps[
     setLoadedImages(prev => new Set(prev).add(id));
   };
 
-  const renderStars = (rating: number, productName: string) => {
+  const renderStars = (rating: number) => {
     return (
       <div className="flex items-center gap-1" role="img" aria-label={`${rating} out of 5 stars`}>
         {[1, 2, 3, 4, 5].map((star) => (
@@ -130,7 +130,7 @@ export default function TopSellingClient({ products }: { products: ProductProps[
 
                     {/* Rating */}
                     <div className="flex items-center gap-1 sm:gap-2">
-                      {renderStars(product.rating, product.name)}
+                      {renderStars(product.rating)}
                       <span className="text-xs text-gray-600">
                         ({product.reviews.toLocaleString()})
                       </span>

@@ -10,7 +10,13 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [cartCount, setCartCount] = useState(0);
+  const [cartCount, setCartCount] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const items = getCartItems();
+      return items.reduce((total, item) => total + item.inventory, 0);
+    }
+    return 0;
+  });
 
   const updateCartCount = () => {
     const items = getCartItems();
@@ -19,7 +25,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    updateCartCount();
+    // Listen for storage changes to update cart count across tabs
+    const handleStorageChange = () => {
+      updateCartCount();
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
   return (

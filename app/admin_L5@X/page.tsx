@@ -2,7 +2,7 @@ import React from 'react';
 import StatCard from '../components/StatCard';
 import SalesChart from '../components/SalesChart';
 import TopProducts from '../components/TopProducts';
-import { FiDollarSign, FiShoppingCart, FiUsers, FiClock, FiCheckCircle, FiXCircle } from 'react-icons/fi';
+import { FiDollarSign, FiShoppingCart, FiUsers } from 'react-icons/fi';
 
 const AdminPage = () => {
   const stats = [
@@ -23,7 +23,7 @@ const AdminPage = () => {
     <div className="bg-gray-50 min-h-screen p-6">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
-        <p className="text-gray-500">Here's a snapshot of your store's performance.</p>
+        <p className="text-gray-500">Here&apos;s a snapshot of your store&apos;s performance.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">

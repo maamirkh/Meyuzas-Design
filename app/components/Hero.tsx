@@ -16,7 +16,7 @@ export default function Hero() {
   ];
 
   useEffect(() => {
-    setIsVisible(true);
+    const visibilityTimer = setTimeout(() => setIsVisible(true), 0);
 
     // Auto rotation every 3 seconds
     const interval = setInterval(() => {
@@ -25,7 +25,10 @@ export default function Hero() {
       );
     }, 3000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearTimeout(visibilityTimer);
+      clearInterval(interval);
+    };
   }, [rotationImages.length]);
 
   return (

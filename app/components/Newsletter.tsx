@@ -29,7 +29,8 @@ export default function Newsletter() {
       } else {
         setMessage(result.message);
       }
-    } catch (error) {
+    } catch (_error: unknown) {
+      void _error; // Explicitly ignore the unused error variable
       setMessage('There was an unexpected error. Please try again.');
     } finally {
       setIsSubmitting(false);

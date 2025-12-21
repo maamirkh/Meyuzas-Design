@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useTransition } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Product } from '../../../../../types/product';
 import { updateProduct } from '../../actions';
@@ -119,7 +120,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product }) => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">Product Image</label>
                         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                             {product.image ? (
-                                <img src={urlFor(product.image).width(150).url()} alt="Current product" className="h-32 w-32 object-cover rounded-md" />
+                                <Image src={urlFor(product.image).width(150).url()} alt="Current product" width={128} height={128} className="object-cover rounded-md" />
                             ) : (
                                 <p className="text-sm text-gray-500">No image available</p>
                             )}
@@ -136,7 +137,7 @@ const EditProductForm: React.FC<EditProductFormProps> = ({ product }) => {
                                 {imagePreview && (
                                     <div className="mt-2">
                                         <p className="text-sm font-medium text-gray-700">New Image Preview:</p>
-                                        <img src={imagePreview} alt="New image preview" className="h-32 w-32 object-cover rounded-md mt-2" />
+                                        <Image src={imagePreview} alt="New image preview" width={128} height={128} className="object-cover rounded-md mt-2" />
                                     </div>
                                 )}
                             </div>

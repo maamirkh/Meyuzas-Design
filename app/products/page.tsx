@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import ProductsPage from '../fetchProduct/page';
 
 export default function products () {

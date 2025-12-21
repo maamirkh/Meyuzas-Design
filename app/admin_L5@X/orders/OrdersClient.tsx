@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useMemo, Fragment } from 'react';
-import { useRouter } from 'next/navigation';
 import { urlFor } from '@/sanity/lib/image';
 import Image from 'next/image';
 import { Order } from './page';
@@ -27,7 +26,6 @@ const getStatusClass = (status: string) => {
 }
 
 const OrdersClient = ({ orders: initialOrders }: { orders: Order[] }) => {
-    const router = useRouter();
     const [orders, setOrders] = useState<Order[]>(initialOrders);
     const [filter, setFilter] = useState('All');
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);

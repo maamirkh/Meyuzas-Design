@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 interface CartItem {
   id: string;
   name: string;
@@ -15,7 +17,6 @@ interface OrderSummaryProps {
   cartItems: CartItem[];
   subtotal: number;
   shipping: number;
-  tax: number;
   total: number;
 }
 
@@ -49,10 +50,12 @@ export default function OrderSummary({ cartItems, subtotal, shipping }: OrderSum
           return (
             <div key={item.id} className="flex gap-3 pb-4 border-b border-[#9ECFD4]/30 last:border-0">
               <div className="w-16 h-16 bg-gradient-to-br from-[#9ECFD4]/20 to-[#78B9B5]/20 rounded-lg overflow-hidden flex-shrink-0 shadow-sm">
-                <img 
+                <Image
                   src={item.image} 
                   alt={item.name}
-                  className="w-full h-full object-cover"
+                  width={64}
+                  height={64}
+                  className="object-cover"
                 />
               </div>
               <div className="flex-1 min-w-0">

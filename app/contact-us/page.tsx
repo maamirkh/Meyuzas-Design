@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { sendContactMessage } from '@/app/actions/contactActions';
 
@@ -66,7 +65,7 @@ const ContactPage = () => {
               Contact Us
             </h1>
             <p className="text-lg text-gray-800 max-w-2xl mx-auto">
-              We'd love to hear from you. Get in touch with us.
+              We&apos;d love to hear from you. Get in touch with us.
             </p>
           </div>
         </div>

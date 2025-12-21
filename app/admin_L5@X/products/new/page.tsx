@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useTransition } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { addProduct } from '../actions';
 
@@ -117,7 +118,7 @@ const AddProductPage = () => {
                 />
                 {imagePreview && (
                   <div className="mt-4">
-                    <img src={imagePreview} alt="Image preview" className="h-32 w-32 object-cover rounded-md" />
+                    <Image src={imagePreview} alt="Image preview" width={128} height={128} className="object-cover rounded-md" />
                   </div>
                 )}
               </div>

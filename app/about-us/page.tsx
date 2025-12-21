@@ -5,7 +5,7 @@ export default function AboutUs() {
       <div className="bg-[#9ECFD4] pt-24 pb-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl lg:text-5xl font-bold text-black mb-6">
-            About Meyuza's
+            About Meyuza&apos;s
           </h1>
           <p className="text-lg lg:text-xl text-gray-800 max-w-3xl mx-auto">
             Where Style Meets Confidence, and Fashion Becomes Your Story
@@ -26,7 +26,7 @@ export default function AboutUs() {
             <div>
               <h2 className="text-2xl lg:text-3xl font-bold text-black mb-4">Our Mission</h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                At Meyuza's, we believe style should feel effortless, confident, and true to who you are. 
+                At Meyuza&apos;s, we believe style should feel effortless, confident, and true to who you are. 
                 Our collections are thoughtfully designed to blend modern aesthetics with everyday comfort, 
                 using quality materials that stand the test of time.
               </p>
@@ -46,7 +46,7 @@ export default function AboutUs() {
             <div>
               <h2 className="text-2xl lg:text-3xl font-bold text-black mb-4">Our Vision</h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                At Meyuza's, we design clothing that celebrates confidence and style. From refined formals 
+                At Meyuza&apos;s, we design clothing that celebrates confidence and style. From refined formals 
                 to elegant fancy wear and effortless casuals, our pieces are crafted to elevate every moment. 
                 We believe in quality, comfort, and timeless fashion made for people who love to stand out.
               </p>
@@ -65,7 +65,7 @@ export default function AboutUs() {
             <div>
               <h2 className="text-2xl lg:text-3xl font-bold text-black mb-4">Our Story</h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                Born from a love for style that fits every occasion, Meyuza's offers fancy, formal, and casual 
+                Born from a love for style that fits every occasion, Meyuza&apos;s offers fancy, formal, and casual 
                 pieces thoughtfully made for real life. With fine fabrics, modern silhouettes, and attention to 
                 detail, we help you express your style with confidence—wherever you go.
               </p>

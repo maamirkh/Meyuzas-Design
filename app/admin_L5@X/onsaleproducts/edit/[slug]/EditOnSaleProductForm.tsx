@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useTransition, useEffect } from 'react'; // Import useEffect
+import React, { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { Product } from '../../../../../types/product';
+import Image from 'next/image';
 import { updateOnSaleProduct } from '../../actions';
 import { urlFor } from '../../../../../sanity/lib/image';
 
@@ -19,18 +20,14 @@ const EditOnSaleProductForm: React.FC<EditOnSaleProductFormProps> = ({ product }
     // State for inputs
     const [originalPrice, setOriginalPrice] = useState(product.price);
     const [currentDiscountPercentage, setCurrentDiscountPercentage] = useState(product.discountPercentage ?? 0);
-    const [calculatedCurrentPrice, setCalculatedCurrentPrice] = useState(0); // State for calculated current price
 
-    useEffect(() => {
-        const priceNum = Number(originalPrice);
-        const discountNum = Number(currentDiscountPercentage);
-        if (!isNaN(priceNum) && !isNaN(discountNum) && discountNum >= 0 && discountNum <= 100) {
-            const discounted = priceNum - (priceNum * discountNum / 100);
-            setCalculatedCurrentPrice(discounted);
-        } else {
-            setCalculatedCurrentPrice(originalPrice); // Fallback to original price if inputs are invalid
-        }
-    }, [originalPrice, currentDiscountPercentage, product.price]); // Add product.price to dependencies
+    // Calculate derived state directly during render
+    const priceNum = Number(originalPrice);
+    const discountNum = Number(currentDiscountPercentage);
+    let calculatedCurrentPrice = originalPrice;
+    if (!isNaN(priceNum) && !isNaN(discountNum) && discountNum >= 0 && discountNum <= 100) {
+        calculatedCurrentPrice = priceNum - (priceNum * discountNum / 100);
+    }
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -53,8 +50,6 @@ const EditOnSaleProductForm: React.FC<EditOnSaleProductFormProps> = ({ product }
         const productName = formData.get('productName') as string;
         const category = formData.get('category') as string;
         // Price and discountPercentage are already handled by state
-        const inventory = parseInt(formData.get('inventory') as string, 10);
-        const description = formData.get('description') as string;
         
         // Use state values for validation
         if (!productName || !category || originalPrice <= 0 || currentDiscountPercentage < 0 || currentDiscountPercentage > 100) {
@@ -162,7 +157,7 @@ const EditOnSaleProductForm: React.FC<EditOnSaleProductFormProps> = ({ product }
                         <label className="block text-sm font-medium text-gray-700 mb-2">Product Image</label>
                         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                             {product.image ? (
-                                <img src={urlFor(product.image).width(150).url()} alt="Current product" className="h-32 w-32 object-cover rounded-md" />
+                                <Image src={urlFor(product.image).width(150).url()} alt="Current product" width={128} height={128} className="object-cover rounded-md" />
                             ) : (
                                 <p className="text-sm text-gray-500">No image available</p>
                             )}
@@ -179,7 +174,7 @@ const EditOnSaleProductForm: React.FC<EditOnSaleProductFormProps> = ({ product }
                                 {imagePreview && (
                                     <div className="mt-2">
                                         <p className="text-sm font-medium text-gray-700">New Image Preview:</p>
-                                        <img src={imagePreview} alt="New image preview" className="h-32 w-32 object-cover rounded-md mt-2" />
+                                        <Image src={imagePreview} alt="New image preview" width={128} height={128} className="object-cover rounded-md mt-2" />
                                     </div>
                                 )}
                             </div>

@@ -4,6 +4,28 @@ import { revalidatePath } from "next/cache";
 import { client } from "../../../sanity/lib/client";
 import { SanityAssetDocument } from "next-sanity";
 
+interface SanityProduct {
+    _type: 'onsaleproducts' | 'product';
+    productName: string;
+    slug: {
+        _type: 'slug';
+        current: string;
+    };
+    category: string;
+    price: number;
+    inventory: number;
+    description: string;
+    discountPercentage?: number;
+    currentPrice?: number;
+    image?: {
+        _type: 'image';
+        asset: {
+            _type: 'reference';
+            _ref: string;
+        };
+    };
+}
+
 export async function deleteOnSaleProduct(productId: string) {
   try {
     await client.delete(productId);
@@ -35,7 +57,7 @@ export async function addOnSaleProduct(formData: FormData) {
             });
         }
 
-        const newProduct: any = {
+        const newProduct: SanityProduct = {
             _type: 'onsaleproducts',
             productName,
             slug: {
@@ -64,9 +86,10 @@ export async function addOnSaleProduct(formData: FormData) {
 
         revalidatePath("/admin_L5@X/onsaleproducts");
         return { success: true };
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Failed to create product:", error);
-        return { success: false, message: `Failed to create product: ${error.message}` };
+        const message = error instanceof Error ? error.message : "An unknown error occurred";
+        return { success: false, message: `Failed to create product: ${message}` };
     }
 }
 
@@ -122,8 +145,9 @@ export async function updateOnSaleProduct(productId: string, formData: FormData)
         revalidatePath(`/admin_L5@X/onsaleproducts/edit/${productName.toLowerCase().replace(/\s+/g, '-').slice(0, 200)}`);
 
         return { success: true };
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Failed to update product:", error);
-        return { success: false, message: `Failed to update product: ${error.message}` };
+        const message = error instanceof Error ? error.message : "An unknown error occurred";
+        return { success: false, message: `Failed to update product: ${message}` };
     }
 }

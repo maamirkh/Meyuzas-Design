@@ -7,7 +7,7 @@ export default function Footer() {
 
   const footerLinks = {
     company: [
-      { name: 'About Us', href: '/about-us', ariaLabel: 'Learn about Meyuza\'s Design' },
+      { name: 'About Us', href: '/about-us', ariaLabel: 'Learn about Meyuza&apos;s Design' },
       // { name: 'Customer Support', href: '/support', ariaLabel: 'Get customer support' },
       { name: 'Terms & Conditions', href: '/terms-conditions', ariaLabel: 'Read terms and conditions' }
     ],
@@ -60,7 +60,7 @@ export default function Footer() {
               <div className="w-6 h-6 bg-[#016B61] rounded-full flex items-center justify-center" aria-hidden="true">
                 <span className="text-white font-bold text-xs">M</span>
               </div>
-              <span className="text-lg sm:text-xl font-bold text-[#016B61]">Meyuza's Design</span>
+              <span className="text-lg sm:text-xl font-bold text-[#016B61]">Meyuza&apos;s Design</span>
             </div>
             <p className="text-[#016B61]/80 text-xs leading-relaxed mb-4 text-center sm:text-left">
               We offer trendy and fashionable clothing for everyone. Discover the latest styles and express your unique personality.
@@ -155,7 +155,7 @@ export default function Footer() {
         <div className="border-t border-[#016B61]/20 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6">
             <p className="text-[#016B61]/80 text-xs text-center md:text-left">
-              © {currentYear} Meyuza's Design. Powered by DevNity InnoVations. All rights reserved.
+              © {currentYear} Meyuza&apos;s Design. Powered by DevNity InnoVations. All rights reserved.
             </p>
             
             {/* Payment Methods */}

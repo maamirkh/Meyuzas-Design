@@ -13,7 +13,7 @@ export default function NotFound() {
           Product Not Found
         </h2>
         <p className="text-slate-600 mb-8 max-w-md mx-auto">
-          Sorry, we couldn't find the product you're looking for.
+          Sorry, we couldn&apos;t find the product you&apos;re looking for.
         </p>
         <Link href="/fetchProduct"
           className="inline-block px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all duration-300"

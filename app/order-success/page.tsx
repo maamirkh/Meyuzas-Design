@@ -29,7 +29,7 @@ export default function OrderSuccessPage() {
           Order Placed Successfully! 🎉
         </h1>
         <p className="text-[#016B61]/80 mb-6">
-          Thank you for your order. We'll send you a confirmation email shortly.
+          Thank you for your order. We&apos;ll send you a confirmation email shortly.
         </p>
 
         {/* Order Details */}

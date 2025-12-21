@@ -17,7 +17,6 @@ import {
   FiMinus,
   FiArrowRight,
   FiPackage,
-  FiTruck,
   FiShield,
   FiPercent,
   FiStar,
@@ -27,12 +26,17 @@ import { useRouter } from "next/navigation";
 
 const CartPage = () => {
   const { updateCartCount } = useCart();
-  const [cartItems, setCartItems] = useState<Product[]>([]);
+  const [cartItems, setCartItems] = useState<Product[]>(() => {
+    if (typeof window !== 'undefined') {
+      return getCartItems();
+    }
+    return [];
+  });
   const [isLoading, setIsLoading] = useState(true);
   const [likedItems, setLikedItems] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    setCartItems(getCartItems());
+    // Cart items are now initialized in useState, this effect now only handles the loading state.
     setTimeout(() => setIsLoading(false), 300);
   }, []);
 
@@ -410,7 +414,7 @@ const CartPage = () => {
                 </div>
                 <h2 className="text-3xl sm:text-4xl font-black text-[#016B61] mb-3 sm:mb-4">Your Cart is Empty</h2>
                 <p className="text-[#016B61]/70 text-base sm:text-lg mb-6 sm:mb-10 max-w-md mx-auto">
-                  Looks like you haven't added anything to your cart yet. Start shopping to discover amazing products!
+                  Looks like you haven&apos;t added anything to your cart yet. Start shopping to discover amazing products!
                 </p>
                 <button
                   onClick={() => router.push("/")}

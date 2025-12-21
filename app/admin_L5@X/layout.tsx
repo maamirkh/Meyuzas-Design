@@ -13,17 +13,19 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const isAuthenticated = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('isAdmin') === 'true';
+    }
+    return false;
+  })[0];
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State for sidebar visibility
 
   useEffect(() => {
-    const isAdmin = localStorage.getItem('isAdmin') === 'true';
-    if (!isAdmin) {
+    if (typeof window !== 'undefined' && !isAuthenticated) {
       router.push('/');
-    } else {
-      setIsAuthenticated(true);
     }
-  }, [router]);
+  }, [isAuthenticated, router]);
 
   if (!isAuthenticated) {
     return null; // Or a loading spinner

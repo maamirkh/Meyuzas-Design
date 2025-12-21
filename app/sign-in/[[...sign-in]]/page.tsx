@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function SignInPage() {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
@@ -35,10 +37,10 @@ export default function SignInPage() {
         </form>
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">
-            Don't have an account?{' '}
-            <a href="/sign-up" className="text-blue-600 hover:underline">
+            Don&apos;t have an account?{' '}
+            <Link href="/sign-up" className="text-blue-600 hover:underline">
               Sign up
-            </a>
+            </Link>
           </p>
         </div>
       </div>

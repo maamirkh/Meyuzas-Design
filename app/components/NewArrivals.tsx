@@ -31,12 +31,12 @@ async function getNewArrivalsData(): Promise<NewArrivalProduct[]> {
       discountPercentage
     } | order(_createdAt desc)[0..3]
   `;
-  const sanityProducts: any[] = await client.fetch(query, {}, {
+  const sanityProducts: Product[] = await client.fetch(query, {}, {
     next: { revalidate: 10 } // Revalidate every 10 seconds
   }); // Using any since the query returns various fields
 
   // Map the Sanity product data to the expected format for the client component
-  return sanityProducts.map((product: any, index) => {
+  return sanityProducts.map((product: Product, index) => {
     let imageUrl = '/placeholder-product.jpg';
     try {
       if (product.image?.asset?._ref) {

@@ -171,7 +171,7 @@ const TermsAndConditions = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <p className="text-gray-700 font-medium">
-                By shopping with us, you agree to these terms. We may update them to serve you better, and we'll always keep you informed.
+                By shopping with us, you agree to these terms. We may update them to serve you better, and we&apos;ll always keep you informed.
               </p>
             </div>
           </div>

@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useTransition, useEffect } from 'react'; // Import useEffect
+import React, { useState, useTransition } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { addOnSaleProduct } from '../actions';
 
@@ -13,18 +14,14 @@ const AddOnSaleProductPage = () => {
   // State for inputs
   const [originalPrice, setOriginalPrice] = useState(0); // Initial state for new product
   const [currentDiscountPercentage, setCurrentDiscountPercentage] = useState(0); // Initial state for new product
-  const [calculatedCurrentPrice, setCalculatedCurrentPrice] = useState(0); // State for calculated current price
-
-  useEffect(() => {
-      const priceNum = Number(originalPrice);
-      const discountNum = Number(currentDiscountPercentage);
-      if (!isNaN(priceNum) && !isNaN(discountNum) && discountNum >= 0 && discountNum <= 100) {
-          const discounted = priceNum - (priceNum * discountNum / 100);
-          setCalculatedCurrentPrice(discounted);
-      } else {
-          setCalculatedCurrentPrice(originalPrice); // Fallback to original price if inputs are invalid
-      }
-  }, [originalPrice, currentDiscountPercentage]);
+  
+  // Calculate derived state directly during render
+  const priceNum = Number(originalPrice);
+  const discountNum = Number(currentDiscountPercentage);
+  let calculatedCurrentPrice = originalPrice;
+  if (!isNaN(priceNum) && !isNaN(discountNum) && discountNum >= 0 && discountNum <= 100) {
+      calculatedCurrentPrice = priceNum - (priceNum * discountNum / 100);
+  }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -47,7 +44,6 @@ const AddOnSaleProductPage = () => {
     const productName = formData.get('productName') as string;
     const category = formData.get('category') as string;
     // Price and discountPercentage are already handled by state
-    const inventory = parseInt(formData.get('inventory') as string, 10);
 
     // Use state values for validation
     if (!productName || !category || originalPrice <= 0 || currentDiscountPercentage < 0 || currentDiscountPercentage > 100) {
@@ -160,7 +156,7 @@ const AddOnSaleProductPage = () => {
                 />
                 {imagePreview && (
                   <div className="mt-4">
-                    <img src={imagePreview} alt="Image preview" className="h-32 w-32 object-cover rounded-md" />
+                    <Image src={imagePreview} alt="Image preview" width={128} height={128} className="object-cover rounded-md" />
                   </div>
                 )}
               </div>

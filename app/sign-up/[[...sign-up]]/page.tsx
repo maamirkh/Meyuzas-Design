@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function SignUpPage() {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
@@ -47,9 +49,9 @@ export default function SignUpPage() {
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">
             Already have an account?{' '}
-            <a href="/sign-in" className="text-blue-600 hover:underline">
+            <Link href="/sign-in" className="text-blue-600 hover:underline">
               Sign in
-            </a>
+            </Link>
           </p>
         </div>
       </div>

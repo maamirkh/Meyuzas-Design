@@ -4,7 +4,6 @@ import Image from "next/image";
 import { Product } from "../../../types/product";
 import AddToCartButton from "../../components/addToCart";
 import { notFound } from "next/navigation";
-import { use } from "react";
 
 interface Props {
   params: Promise<{
