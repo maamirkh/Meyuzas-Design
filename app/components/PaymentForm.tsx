@@ -1,8 +1,8 @@
 'use client';
 import { useState, FormEvent, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { client } from '../../sanity/lib/client';
 import { getCodOrderCountForToday } from '../actions/actions';
+import { createOrder } from '@/app/actions/orderActions';
 
 interface CartItem {
   id: string;
@@ -225,16 +225,14 @@ export default function PaymentForm({
           : undefined,
       };
 
-      await client.create(orderDocument);
+      const result = await createOrder(orderDocument, cartItems);
 
-      // Create a transaction to decrement inventory
-      const transaction = client.transaction();
-      cartItems.forEach(item => {
-        transaction.patch(item.id, {
-          dec: { inventory: item.quantity }
-        });
-      });
-      await transaction.commit();
+      if (!result.success) {
+          console.error('Order submission error:', result.message);
+          setErrors({ submit: result.message || 'Failed to place order. Please try again.' });
+          setIsProcessing(false);
+          return;
+      }
 
       // Call the callback to clear cart and update counter
       onOrderComplete();
