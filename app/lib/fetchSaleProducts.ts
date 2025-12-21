@@ -21,7 +21,9 @@ const query = `
 
 export async function fetchSaleProducts(): Promise<Product[]> {
   try {
-    const products = await client.fetch(query);
+    const products = await client.fetch(query, {}, {
+      next: { revalidate: 10 } // Revalidate every 10 seconds
+    });
     console.log('Fetched sale products:', products); // Debug log
     return products;
   } catch (error) {

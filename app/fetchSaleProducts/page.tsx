@@ -2,10 +2,11 @@ import { client } from "@/sanity/lib/client";
 import { Product } from "../../types/product"
 import ProductCards from "./productCards";
 
-
+export const revalidate = 5;
 export default async function FetchSaleProductsPage() {
   const query = `
-    *[_type == "onsaleproducts" && defined(slug.current)] {
+    *[_type == "onsaleproducts" && defined(slug.current)] 
+    | order(_createdAt desc){
       _id,
       _type,
       productName,
