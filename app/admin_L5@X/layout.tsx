@@ -13,22 +13,32 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const isAuthenticated = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('isAdmin') === 'true';
-    }
-    return false;
-  })[0];
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null); // State to hold auth status, null initially
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State for sidebar visibility
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && !isAuthenticated) {
+    // This useEffect runs only on the client after initial render
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    setIsAuthenticated(isAdmin);
+  }, []); // Empty dependency array means it runs once on mount
+
+  useEffect(() => {
+    // Only redirect if authentication status is known and user is not authenticated
+    if (isAuthenticated === false) { // Explicitly check for false, not null
       router.push('/');
     }
   }, [isAuthenticated, router]);
 
-  if (!isAuthenticated) {
-    return null; // Or a loading spinner
+  if (isAuthenticated === null) {
+    // Show a loading spinner or null while authentication status is being determined on client
+    return null;
+  }
+
+  if (isAuthenticated === false) {
+    // If not authenticated, the useEffect above will redirect.
+    // We return null here to prevent rendering the admin layout temporarily
+    // or until the redirect happens.
+    return null;
   }
 
   return (

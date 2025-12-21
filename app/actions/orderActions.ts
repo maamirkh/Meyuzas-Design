@@ -66,3 +66,27 @@ export async function createOrder(orderData: OrderDocument, cartItems: OrderItem
         return { success: false, message: `Failed to place order: ${message}` };
     }
 }
+
+export async function deleteOrder(orderId: string) {
+    try {
+        await client.delete(orderId);
+        revalidatePath("/admin_L5@X/orders");
+        return { success: true, message: "Order deleted successfully." };
+    } catch (error: unknown) {
+        console.error("Failed to delete order:", error);
+        const message = error instanceof Error ? error.message : "An unknown error occurred";
+        return { success: false, message: `Failed to delete order: ${message}` };
+    }
+}
+
+export async function updateOrderStatus(orderId: string, newStatus: string) {
+    try {
+        await client.patch(orderId).set({ orderStatus: newStatus }).commit();
+        revalidatePath("/admin_L5@X/orders");
+        return { success: true, message: "Order status updated successfully." };
+    } catch (error: unknown) {
+        console.error("Failed to update order status:", error);
+        const message = error instanceof Error ? error.message : "An unknown error occurred";
+        return { success: false, message: `Failed to update order status: ${message}` };
+    }
+}

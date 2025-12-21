@@ -4,7 +4,7 @@ import React, { useState, useMemo, Fragment } from 'react';
 import { urlFor } from '@/sanity/lib/image';
 import Image from 'next/image';
 import { Order } from './page';
-import { client } from '@/sanity/lib/client';
+import { deleteOrder, updateOrderStatus } from '@/app/actions/orderActions';
 import { Dialog, Transition } from '@headlessui/react';
 
 const getStatusClass = (status: string) => {
@@ -51,8 +51,12 @@ const OrdersClient = ({ orders: initialOrders }: { orders: Order[] }) => {
         if (window.confirm('Are you sure you want to delete this order? This action cannot be undone.')) {
             setIsDeleting(true);
             try {
-                await client.delete(orderId);
-                setOrders(prevOrders => prevOrders.filter(o => o._id !== orderId));
+                const result = await deleteOrder(orderId); // Call server action
+                if (result.success) {
+                    setOrders(prevOrders => prevOrders.filter(o => o._id !== orderId));
+                } else {
+                    alert(result.message);
+                }
             } catch (error) {
                 console.error('Failed to delete order:', error);
                 alert('Failed to delete order. Please try again.');
@@ -64,9 +68,13 @@ const OrdersClient = ({ orders: initialOrders }: { orders: Order[] }) => {
     
     const handleStatusChange = async (orderId: string, newStatus: Order['orderStatus']) => {
         try {
-            await client.patch(orderId).set({ orderStatus: newStatus }).commit();
-            setOrders(prevOrders => prevOrders.map(o => o._id === orderId ? { ...o, orderStatus: newStatus } : o));
-            setIsEditModalOpen(false);
+            const result = await updateOrderStatus(orderId, newStatus); // Call server action
+            if (result.success) {
+                setOrders(prevOrders => prevOrders.map(o => o._id === orderId ? { ...o, orderStatus: newStatus } : o));
+                setIsEditModalOpen(false);
+            } else {
+                alert(result.message);
+            }
         } catch (error) {
             console.error('Failed to update status:', error);
             alert('Failed to update status. Please try again.');
