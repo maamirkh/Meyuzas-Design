@@ -14,7 +14,7 @@ interface OrderItem {
     currentPrice?: number;
 }
 
-interface OrderDocument {
+export interface OrderDocument {
     _type: 'order';
     customerName: string;
     phone: string;

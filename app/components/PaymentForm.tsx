@@ -2,7 +2,7 @@
 import { useState, FormEvent, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCodOrderCountForToday } from '../actions/actions';
-import { createOrder } from '@/app/actions/orderActions';
+import { createOrder, OrderDocument } from '@/app/actions/orderActions';
 
 interface CartItem {
   id: string;
@@ -188,7 +188,7 @@ export default function PaymentForm({
     setIsProcessing(true);
 
     try {
-      const orderDocument = {
+      const orderDocument: OrderDocument = {
         _type: 'order',
         customerName: formData.fullName,
         phone: formData.phone,
