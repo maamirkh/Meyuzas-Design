@@ -31,6 +31,7 @@ export async function deleteOnSaleProduct(productId: string) {
     await client.delete(productId);
     revalidatePath("/admin_L5@X/onsaleproducts");
     revalidatePath(`/admin_L5@X/onsaleproducts/edit/[slug]`, 'page');
+    revalidatePath("/fetchSaleProducts");
     return { success: true };
   } catch (error) {
     console.error("Failed to delete product:", error);
@@ -85,6 +86,7 @@ export async function addOnSaleProduct(formData: FormData) {
         await client.create(newProduct);
 
         revalidatePath("/admin_L5@X/onsaleproducts");
+        revalidatePath("/fetchSaleProducts");
         return { success: true };
     } catch (error: unknown) {
         console.error("Failed to create product:", error);
@@ -143,6 +145,7 @@ export async function updateOnSaleProduct(productId: string, formData: FormData)
 
         revalidatePath("/admin_L5@X/onsaleproducts");
         revalidatePath(`/admin_L5@X/onsaleproducts/edit/${productName.toLowerCase().replace(/\s+/g, '-').slice(0, 200)}`);
+        revalidatePath("/fetchSaleProducts");
 
         return { success: true };
     } catch (error: unknown) {

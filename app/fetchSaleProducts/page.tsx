@@ -2,7 +2,7 @@ import { client } from "@/sanity/lib/client";
 import { Product } from "../../types/product"
 import ProductCards from "./productCards";
 
-export const revalidate = 5;
+export const revalidate = 0;
 export default async function FetchSaleProductsPage() {
   const query = `
     *[_type == "onsaleproducts" && defined(slug.current)] 
