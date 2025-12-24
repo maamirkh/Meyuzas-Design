@@ -84,7 +84,7 @@ const OnSaleProductsClient: React.FC<OnSaleProductsClientProps> = ({ products })
                     <p className="text-gray-900 whitespace-no-wrap">{product.discountPercentage}%</p>
                   </td>
                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <Link href={`/admin_L5@X/onsaleproducts/edit/${product.slug.current}`} passHref>
+                    <Link href={`/admin_L5@X/onsaleproducts/edit/${product.slug}`} passHref>
                        <button className="px-3 py-1 bg-gradient-to-r from-[#9ECFD4] via-[#78B9B5] to-[#016B61] text-black text-xs font-bold rounded-md hover:from-[#78B9B5] hover:via-[#016B61] hover:to-[#9ECFD4] shadow-sm transition-all duration-300 mr-4">Edit</button>
                     </Link>
                     <button 
@@ -125,7 +125,7 @@ const OnSaleProductsClient: React.FC<OnSaleProductsClientProps> = ({ products })
               <p><span className="font-medium">Discount:</span> {product.discountPercentage}%</p>
             </div>
             <div className="mt-4 flex flex-wrap gap-2">
-              <Link href={`/admin_L5@X/onsaleproducts/edit/${product.slug.current}`} passHref>
+              <Link href={`/admin_L5@X/onsaleproducts/edit/${product.slug}`} passHref>
                  <button className="flex-1 px-3 py-1 bg-gradient-to-r from-[#9ECFD4] via-[#78B9B5] to-[#016B61] text-black text-xs font-bold rounded-md hover:from-[#78B9B5] hover:via-[#016B61] hover:to-[#9ECFD4] shadow-sm transition-all duration-300">Edit</button>
               </Link>
               <button 
