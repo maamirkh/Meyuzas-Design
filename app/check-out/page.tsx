@@ -4,9 +4,10 @@ import { useRouter } from 'next/navigation';
 import PaymentForm from '../components/PaymentForm';
 import OrderSummary from '../components/OrderSummary';
 import { Product } from '../../types/product';
-import { getCartItems, clearCart } from '../../actions/actions';
+import { getCartItems, clearCart, removeFromCart } from '../../actions/actions';
 import { useCart } from '../context/CartContext';
-import { urlFor } from '@/sanity/lib/image'; // ✅ Add this import
+import { urlFor } from '@/sanity/lib/image';
+import Link from 'next/link';
 
 // Checkout expects this format
 interface CartItem {
@@ -121,15 +122,14 @@ export default function CheckoutPage() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8 animate-slide-down">
-          <button
-            onClick={() => router.back()}
+          <Link href="/Cart"
             className="flex items-center gap-2 text-[#016B61] hover:text-[#78B9B5] font-medium transition-colors duration-300 mb-4 group"
           >
             <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
             Back to Cart
-          </button>
+          </Link>
           <h1 className="text-3xl sm:text-4xl font-bold text-[#016B61] mb-2">Secure Checkout</h1>
           <p className="text-[#016B61]/80">Complete your order in a few simple steps</p>
         </div>
@@ -152,9 +152,11 @@ export default function CheckoutPage() {
           <div className="lg:col-span-1">
             <OrderSummary
               cartItems={cartItems}
+              setCartItems={setCartItems}
               subtotal={subtotal}
               shipping={shipping}
               total={total}
+              updateCartCount={updateCartCount}
             />
           </div>
         </div>

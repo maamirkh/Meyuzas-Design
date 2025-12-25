@@ -99,7 +99,7 @@ export default function Navbar() {
               type="button"
             >
               <svg
-                className={`h-6 w-6 text-[#016B61] transition-transform duration-300 ${isMenuOpen ? 'rotate-90' : ''}`}
+                className={`h-6 w-6 text-gray-900 transition-transform duration-300 ${isMenuOpen ? 'rotate-90' : ''}`}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -114,7 +114,7 @@ export default function Navbar() {
               aria-label="Open search"
               type="button"
             >
-              <svg className="h-6 w-6 text-[#016B61]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <svg className="h-6 w-6 text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </button>
@@ -149,7 +149,7 @@ export default function Navbar() {
                 key={item.name}
                 href={item.path}
                 aria-label={item.ariaLabel}
-                className="relative text-[#016B61] hover:text-[#014a43] font-bold text-sm lg:text-base transition-colors duration-200 group py-2 px-1 xl:px-2"
+                className="relative text-gray-900 hover:text-[#014a43] font-bold text-sm lg:text-base transition-colors duration-200 group py-2 px-1 xl:px-2"
               >
                 {item.name}
                 <span
@@ -166,7 +166,7 @@ export default function Navbar() {
             <form onSubmit={handleSearch} className="relative group hidden lg:block">
               <label htmlFor="search-desktop" className="sr-only">Search products</label>
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none transition-transform duration-300 group-hover:scale-110">
-                <svg className="h-4 w-4 text-gray-400 transition-colors duration-300 group-hover:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <svg className="h-4 w-4 text-gray-700 transition-colors duration-300 group-hover:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
@@ -224,7 +224,7 @@ export default function Navbar() {
                 className="w-full pl-10 pr-4 py-3 bg-gray-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black focus:bg-white transition-all duration-300 focus:shadow-lg"
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none transition-transform duration-300 group-focus-within:scale-110">
-                <svg className="h-5 w-5 text-gray-400 transition-colors duration-300 group-focus-within:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <svg className="h-5 w-5 text-gray-700 transition-colors duration-300 group-focus-within:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
@@ -245,7 +245,7 @@ export default function Navbar() {
                 key={item.name}
                 href={item.path}
                 aria-label={item.ariaLabel}
-                className="text-gray-700 hover:text-black font-medium py-3 px-3 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:translate-x-1 text-base"
+                className="text-gray-900 hover:text-black font-medium py-3 px-3 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:translate-x-1 text-base"
                 style={{ transitionDelay: `${index * 50}ms` }}
                 onClick={() => setIsMenuOpen(false)}
               >

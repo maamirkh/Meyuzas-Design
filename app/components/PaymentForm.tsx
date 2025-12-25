@@ -53,7 +53,6 @@ export default function PaymentForm({
 }: PaymentFormProps) {
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [isCodDisabled, setIsCodDisabled] = useState(true); // Disable by default
   const [formData, setFormData] = useState<FormData>({
     fullName: '',
     email: '',
@@ -68,23 +67,6 @@ export default function PaymentForm({
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [showSuccess, setShowSuccess] = useState(false);
-
-  useEffect(() => {
-    async function checkCodLimit() {
-      const count = await getCodOrderCountForToday();
-      if (count >= 15) {
-        setIsCodDisabled(true);
-        // If COD was the default and is now disabled, switch to another method
-        setFormData(prev => ({
-          ...prev,
-          paymentMethod: 'easypaisa' 
-        }));
-      } else {
-        setIsCodDisabled(false);
-      }
-    }
-    checkCodLimit();
-  }, []);
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -138,9 +120,9 @@ export default function PaymentForm({
       newErrors.fullName = 'Full name must be at least 3 characters';
     }
 
-    if (!formData.email || !validateEmail(formData.email)) {
+    if (formData.email && !validateEmail(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
-    }
+  }
 
     if (!formData.phone || !validatePhone(formData.phone)) {
       newErrors.phone = 'Please enter a valid Pakistani phone number (03XXXXXXXXX)';
@@ -158,9 +140,9 @@ export default function PaymentForm({
       newErrors.province = 'Please select a province';
     }
 
-    if (!formData.postalCode || formData.postalCode.length < 5) {
+    if (formData.postalCode && formData.postalCode.length < 5) {
       newErrors.postalCode = 'Please enter a valid postal code';
-    }
+  }
 
     if (formData.paymentMethod === 'easypaisa' || formData.paymentMethod === 'jazzcash') {
       if (!formData.accountNumber || !validateAccountNumber(formData.accountNumber)) {
@@ -314,7 +296,7 @@ export default function PaymentForm({
 
           <div>
             <label htmlFor="email" className="block text-sm font-semibold text-[#016B61] mb-2">
-              Email Address *
+              Email Address (Optional)
             </label>
             <input
               type="email"
@@ -326,7 +308,6 @@ export default function PaymentForm({
                 errors.email ? 'border-red-500' : 'border-[#9ECFD4]/30'
               }`}
               placeholder="john@example.com"
-              required
             />
             {errors.email && (
               <p className="error-message text-red-600 text-sm mt-1">{errors.email}</p>
@@ -438,7 +419,7 @@ export default function PaymentForm({
 
             <div>
               <label htmlFor="postalCode" className="block text-sm font-semibold text-[#016B61] mb-2">
-                Postal Code *
+                Postal Code (Optional)
               </label>
               <input
                 type="text"
@@ -450,7 +431,6 @@ export default function PaymentForm({
                   errors.postalCode ? 'border-red-500' : 'border-[#9ECFD4]/30'
                 }`}
                 placeholder="75500"
-                required
               />
               {errors.postalCode && (
                 <p className="error-message text-red-600 text-sm mt-1">{errors.postalCode}</p>
@@ -523,7 +503,7 @@ export default function PaymentForm({
           </label>
 
           {/* Cash on Delivery */}
-          {!isCodDisabled && (
+          
             <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
               formData.paymentMethod === 'cod' 
                 ? 'border-[#016B61] bg-[#9ECFD4]/10 shadow-md' 
@@ -549,7 +529,7 @@ export default function PaymentForm({
                 </div>
               </div>
             </label>
-          )}
+         
         </div>
 
         {/* Payment Details for Easypaisa/JazzCash */}

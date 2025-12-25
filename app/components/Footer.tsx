@@ -48,7 +48,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#78B9B5] text-[#016B61] border-t border-[#016B61]/20">
+    <footer className="bg-[#78B9B5] text-gray-900 border-t border-gray-700/20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
         
         {/* Main Footer Grid - Now 3 columns */}
@@ -57,12 +57,12 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="text-center sm:text-left">
             <div className="flex items-center justify-center sm:justify-start gap-2 mb-3">
-              <div className="w-6 h-6 bg-[#016B61] rounded-full flex items-center justify-center" aria-hidden="true">
+              <div className="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center" aria-hidden="true">
                 <span className="text-white font-bold text-xs">M</span>
               </div>
-              <span className="text-lg sm:text-xl font-bold text-[#016B61]">Meyuza&apos;s Design</span>
+              <span className="text-lg sm:text-xl font-bold text-gray-900">Meyuza&apos;s Design</span>
             </div>
-            <p className="text-[#016B61]/80 text-xs leading-relaxed mb-4 text-center sm:text-left">
+            <p className="text-gray-700 text-xs leading-relaxed mb-4 text-center sm:text-left">
               We offer trendy and fashionable clothing for everyone. Discover the latest styles and express your unique personality.
             </p>
             
@@ -75,13 +75,13 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.ariaLabel}
-                  className={`bg-[#016B61]/10 hover:bg-[#016B61] p-2 rounded-lg transition-all duration-300 transform hover:scale-110 hover:shadow-lg group ${
+                  className={`bg-gray-900/10 hover:bg-gray-900 p-2 rounded-lg transition-all duration-300 transform hover:scale-110 hover:shadow-lg group ${
                     social.icon === 'whatsapp' ? 'hover:bg-green-500' : ''
                   }`}
                 >
                   <svg 
                     className={`w-4 h-4 transition-colors duration-300 group-hover:text-white ${
-                      social.icon === 'whatsapp' ? 'text-green-600' : 'text-[#016B61]'
+                      social.icon === 'whatsapp' ? 'text-green-600' : 'text-gray-900'
                     }`} 
                     fill="currentColor" 
                     viewBox="0 0 24 24" 
@@ -96,19 +96,19 @@ export default function Footer() {
 
           {/* Company Links - CENTERED */}
           <nav className="text-center" aria-labelledby="footer-company-heading">
-            <h3 id="footer-company-heading" className="font-semibold text-sm sm:text-base mb-3 text-[#016B61]">Company</h3>
+            <h3 id="footer-company-heading" className="font-semibold text-sm sm:text-base mb-3 text-gray-900">Company</h3>
             <ul className="space-y-2">
               {footerLinks.company.map((item) => (
                 <li key={item.name}>
                   <Link 
                     href={item.href}
                     aria-label={item.ariaLabel}
-                    className="relative inline-block text-[#016B61]/80 hover:text-[#016B61] transition-colors duration-300 text-xs sm:text-sm group"
+                    className="relative inline-block text-gray-700 hover:text-gray-900 transition-colors duration-300 text-xs sm:text-sm group"
                   >
                     <span className="relative">
                       {item.name}
                       {/* Underline: LEFT TO RIGHT */}
-                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#016B61] group-hover:w-full transition-all duration-700 ease-out"></span>
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gray-900 group-hover:w-full transition-all duration-700 ease-out"></span>
                     </span>
                   </Link>
                 </li>
@@ -118,7 +118,7 @@ export default function Footer() {
 
           {/* Resources Section - WhatsApp added */}
           <nav className="text-center sm:text-right" aria-labelledby="footer-resources-heading">
-            <h3 id="footer-resources-heading" className="font-semibold text-sm sm:text-base mb-3 text-[#016B61]">Resources</h3>
+            <h3 id="footer-resources-heading" className="font-semibold text-sm sm:text-base mb-3 text-gray-900">Resources</h3>
             <ul className="space-y-2">
               {footerLinks.resources.map((item) => (
                 <li key={item.name}>
@@ -127,7 +127,7 @@ export default function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={item.ariaLabel}
-                    className="relative inline-flex items-center justify-center sm:justify-end gap-2 text-[#016B61]/80 hover:text-[#016B61] transition-colors duration-300 text-xs sm:text-sm group"
+                    className="relative inline-flex items-center justify-center sm:justify-end gap-2 text-gray-700 hover:text-gray-900 transition-colors duration-300 text-xs sm:text-sm group"
                   >
                     <svg 
                       className={`w-3 h-3 flex-shrink-0 group-hover:scale-110 transition-transform duration-300 ${
@@ -142,7 +142,7 @@ export default function Footer() {
                     <span className="relative">
                       {item.name}
                       {/* Underline: LEFT TO RIGHT */}
-                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#016B61] group-hover:w-full transition-all duration-700 ease-out"></span>
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gray-900 group-hover:w-full transition-all duration-700 ease-out"></span>
                     </span>
                   </Link>
                 </li>
@@ -152,15 +152,15 @@ export default function Footer() {
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t border-[#016B61]/20 pt-6">
+        <div className="border-t border-gray-700/20 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6">
-            <p className="text-[#016B61]/80 text-xs text-center md:text-left">
+            <p className="text-gray-700 text-xs text-center md:text-left">
               © {currentYear} Meyuza&apos;s Design. Powered by DevNity InnoVations. All rights reserved.
             </p>
             
             {/* Payment Methods */}
             <div className="flex items-center gap-3 flex-wrap justify-center">
-              <div className="text-[#016B61]/80 text-xs font-medium">We accept:</div>
+              <div className="text-gray-700 text-xs font-medium">We accept:</div>
               <div className="flex items-center gap-2" role="list" aria-label="Accepted payment methods">
                 
                 {/* Visa Card */}

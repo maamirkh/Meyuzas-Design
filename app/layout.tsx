@@ -5,7 +5,6 @@ import Footer from './components/Footer';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
 import { ReactNode } from 'react';
 import type { Metadata } from 'next';
-import { CartProvider } from "./context/CartContext";
 import Providers from './providers';
 
 const poppins = Poppins({
@@ -131,10 +130,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
       </head>
       <body className={`${poppins.className} antialiased text-gray-900 min-h-screen flex flex-col`}>
         <Providers>
-          <CartProvider>
             <Navbar />
             <main className="flex-grow">{children}</main>
-          </CartProvider>
           <Footer />
           <FloatingWhatsApp />
         </Providers>

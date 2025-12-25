@@ -11,7 +11,7 @@ export default function ProductCards({ product }: { product: Product }) {
   return (
     <Link
       href={href}
-      className="group relative block bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
+      className="group relative block bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
     >
       {/* Badges */}
       {/* Discount Badge */}
@@ -25,13 +25,13 @@ export default function ProductCards({ product }: { product: Product }) {
 
       {/* Heart Button */}
       <div className="absolute top-3 right-3 z-10">
-        <button className="p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-gray-100 transition-colors">
-          <FiHeart className="w-5 h-5 text-gray-600" />
+        <button className="p-2 bg-white/90 dark:bg-gray-700/90 backdrop-blur-sm rounded-full hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+          <FiHeart className="w-5 h-5 text-gray-600 dark:text-gray-300" />
         </button>
       </div>
 
       {/* Image */}
-      <div className="relative aspect-square bg-gray-100">
+      <div className="relative aspect-square bg-gray-100 dark:bg-gray-700">
         {product.image?.asset ? (
           <Image
             src={urlFor(product.image).url()}
@@ -41,7 +41,7 @@ export default function ProductCards({ product }: { product: Product }) {
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
-          <div className="flex items-center justify-center h-full text-gray-400">
+          <div className="flex items-center justify-center h-full text-gray-400 dark:text-gray-500">
             <FiShoppingCart className="w-12 h-12" />
           </div>
         )}
@@ -50,11 +50,11 @@ export default function ProductCards({ product }: { product: Product }) {
       {/* Details */}
       <div className="p-4">
         <div className="flex justify-between items-start h-14">
-          <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 line-clamp-2">
             {product.productName}
           </h3>
           {product.rating && (
-            <div className="flex items-center gap-1 text-sm text-gray-600">
+            <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
               <FiStar className="w-4 h-4 text-yellow-400" />
               {product.rating}
             </div>
@@ -63,9 +63,9 @@ export default function ProductCards({ product }: { product: Product }) {
 
         <div className="mt-4 flex items-center justify-between">
           <div className="space-y-1 h-14">
-            <span className="text-xl font-bold text-gray-900">Rs. {product.currentPrice}</span>
+            <span className="text-xl font-bold text-gray-900 dark:text-gray-100">Rs. {product.currentPrice}</span>
             {product.discountPercentage && ( // Only show original price if there's a discount
-              <span className="block text-sm text-gray-500 line-through">
+              <span className="block text-sm text-gray-500 dark:text-gray-400 line-through">
                 Rs. {product.price}
               </span>
             )}

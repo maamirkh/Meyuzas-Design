@@ -2,6 +2,10 @@
 
 import Image from 'next/image';
 
+import { removeFromCart, clearCart } from '../../actions/actions';
+import { useCart } from '../context/CartContext';
+
+
 interface CartItem {
   id: string;
   name: string;
@@ -15,14 +19,29 @@ interface CartItem {
 
 interface OrderSummaryProps {
   cartItems: CartItem[];
+  setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
   subtotal: number;
   shipping: number;
   total: number;
+  updateCartCount: () => void;
 }
 
-export default function OrderSummary({ cartItems, subtotal, shipping }: OrderSummaryProps) {
+export default function OrderSummary({ cartItems, setCartItems, subtotal, shipping, updateCartCount }: OrderSummaryProps) {
   // Calculate total without tax but including shipping
   const finalTotal = subtotal + shipping;
+
+  const handleRemoveItem = (itemId: string) => {
+    removeFromCart(itemId);
+    const updatedCart = cartItems.filter(item => item.id !== itemId);
+    setCartItems(updatedCart);
+    updateCartCount();
+  };
+
+  const handleClearCart = () => {
+    clearCart();
+    setCartItems([]);
+    updateCartCount();
+  };
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 sticky top-24 border-2 border-[#9ECFD4]/30">
@@ -32,6 +51,16 @@ export default function OrderSummary({ cartItems, subtotal, shipping }: OrderSum
         </svg>
         Order Summary
       </h2>
+      
+      {cartItems.length > 0 && (
+        <button
+          onClick={handleClearCart}
+          className="w-full mb-4 text-sm font-medium text-red-600 hover:text-red-800 transition-colors duration-300"
+        >
+          Clear Cart
+        </button>
+      )}
+
 
       {/* Cart Items */}
       <div className="space-y-4 mb-6 max-h-64 overflow-y-auto custom-scrollbar">
@@ -68,6 +97,15 @@ export default function OrderSummary({ cartItems, subtotal, shipping }: OrderSum
                   )}
                 </div>
               </div>
+              <button
+                onClick={() => handleRemoveItem(item.id)}
+                className="text-red-500 hover:text-red-700 transition-colors"
+                aria-label={`Remove ${item.name}`}
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
           );
         })}
