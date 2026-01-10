@@ -81,7 +81,7 @@ export default function CheckoutPage() {
   const tax = 0; // Tax remains 0 as before
 
   // Calculate shipping and total based on province state
-  const shipping = province && province.toLowerCase() === 'sindh' ? 500 : province ? 1000 : 0;
+  const shipping = province && province.toLowerCase() === 'sindh' ? 300 : province ? 300 : 0;
   const total = subtotal + shipping;
 
   if (isLoading) {
