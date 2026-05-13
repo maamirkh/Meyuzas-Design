@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
   };
 
   // ✅ PayFast gateway URL bhi hardcoded https
-  const gatewayUrl = "https://ipguat.apps.net.pk/Ecommerce/api/Transaction/PostTransaction";
+  const gatewayUrl = process.env.PAYFAST_GATEWAY_URL || "https://ipguat.apps.net.pk/Ecommerce/api/Transaction/PostTransaction";
 
   return NextResponse.json({ formData, gatewayUrl });
 }
