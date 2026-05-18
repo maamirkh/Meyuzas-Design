@@ -16,6 +16,8 @@ async function getOrders(): Promise<Order[]> {
     orderItems[] {
       _key,
       quantity,
+      price,
+      discountedPrice,
       product-> {
         _id,
         productName,

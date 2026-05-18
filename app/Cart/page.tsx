@@ -98,10 +98,11 @@ const CartPage = () => {
   };
 
       const calculateSubtotal = () => {
-
-        return cartItems.reduce((total, item) => total + item.price * item.inventory, 0);
-
-      };
+    return cartItems.reduce((total, item) => {
+        const priceToUse = item.currentPrice ?? item.price;
+        return total + priceToUse * item.inventory;
+    }, 0);
+};
 
     
 
@@ -463,11 +464,21 @@ const CartPage = () => {
 
                                 <span className="text-xs sm:text-sm text-[#016B61] font-medium">Unit Price:</span>
 
-                                <span className="text-lg sm:text-2xl font-black text-[#016B61]">
-
-                                  Rs. {item.price}
-
-                                </span>
+                                <div className="flex flex-col">
+  {item.currentPrice && item.currentPrice < item.price && (
+    <span className="text-sm text-gray-400 line-through">
+      Rs. {item.price}
+    </span>
+  )}
+  <span className="text-lg sm:text-2xl font-black text-[#016B61]">
+    Rs. {item.currentPrice ?? item.price}
+  </span>
+  {item.currentPrice && item.currentPrice < item.price && (
+    <span className="text-xs font-semibold text-green-600">
+      You save Rs. {(item.price - item.currentPrice).toFixed(2)}
+    </span>
+  )}
+</div>
 
                               </div>
 
@@ -537,7 +548,7 @@ const CartPage = () => {
 
                                 <p className="text-xl sm:text-3xl font-black text-[#016B61]">
 
-                                  Rs. {(item.price * item.inventory).toFixed(2)}
+                                  Rs. {((item.currentPrice ?? item.price) * item.inventory).toFixed(2)}
 
                                 </p>
 

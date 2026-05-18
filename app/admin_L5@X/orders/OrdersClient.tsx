@@ -157,6 +157,7 @@ const OrdersClient = ({ orders: initialOrders }: { orders: Order[] }) => {
                                 <p>{selectedOrder.customerName}</p>
                                 <p>{selectedOrder.email}</p>
                                 <p>{selectedOrder.phone}</p>
+                                <p className="mt-2"><span className="font-bold">Payment:</span> <span className="uppercase">{selectedOrder.paymentMethod === 'payfast' ? 'Online (PayFast)' : selectedOrder.paymentMethod}</span></p>
                                 <p className="text-sm text-gray-600 mt-2">Order Placed: {new Date(selectedOrder._createdAt).toLocaleString()}</p>
                             </div>
                             <div>
@@ -169,20 +170,23 @@ const OrdersClient = ({ orders: initialOrders }: { orders: Order[] }) => {
                         <div>
                              <h4 className="font-bold mb-2">Order Items</h4>
                              <div className="space-y-2">
-                                {selectedOrder.orderItems.map(item => (
-                                    <div key={item._key} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
-                                        <div className="flex items-center gap-3">
-                                            {item.product.image && (
-                                              <Image src={urlFor(item.product.image).width(50).height(50).url()} alt={item.product.productName} width={50} height={50} className="rounded-md" />
-                                            )}
-                                            <div>
-                                                <p className="font-semibold">{item.product.productName}</p>
-                                                <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
+                                {selectedOrder.orderItems.map(item => {
+                                    const priceToUse = item.discountedPrice !== undefined ? item.discountedPrice : (item.price || item.product.price || 0);
+                                    return (
+                                        <div key={item._key} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                                            <div className="flex items-center gap-3">
+                                                {item.product.image && (
+                                                  <Image src={urlFor(item.product.image).width(50).height(50).url()} alt={item.product.productName} width={50} height={50} className="rounded-md" />
+                                                )}
+                                                <div>
+                                                    <p className="font-semibold">{item.product.productName}</p>
+                                                    <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
+                                                </div>
                                             </div>
+                                            <p className="font-semibold">Rs. {(priceToUse * (item.quantity || 0)).toFixed(2)}</p>
                                         </div>
-                                        <p className="font-semibold">Rs. {((item.product?.price || 0) * (item.quantity || 0)).toFixed(2)}</p>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         </div>
                          {/* Pricing */}

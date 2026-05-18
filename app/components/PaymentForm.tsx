@@ -21,6 +21,7 @@ interface PaymentFormProps {
   total: number;
   onOrderComplete: () => void;
   onProvinceChange?: (province: string) => void;
+  onCityChange?: (city: string) => void;
 }
 
 type PaymentMethod = 'payfast' | 'cod';
@@ -46,7 +47,8 @@ export default function PaymentForm({
   shipping,
   total,
   onOrderComplete,
-  onProvinceChange
+  onProvinceChange,
+  onCityChange
 }: PaymentFormProps) {
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -90,6 +92,10 @@ export default function PaymentForm({
 
     if (name === 'province' && onProvinceChange) {
       onProvinceChange(processedValue);
+    }
+
+    if (name === 'city' && onCityChange) {
+      onCityChange(processedValue);
     }
 
     if (errors[name]) {
@@ -139,7 +145,47 @@ export default function PaymentForm({
   const handlePayFastPayment = async () => {
     setIsProcessing(true);
     try {
-      const basketId = `ORDER-${Date.now()}`;
+      // Create the order in Sanity first
+      const orderDocument: OrderDocument = {
+        _type: 'order',
+        customerName: formData.fullName,
+        phone: formData.phone,
+        email: formData.email,
+        address: formData.address,
+        city: formData.city,
+        province: formData.province,
+        postalCode: formData.postalCode,
+        paymentMethod: formData.paymentMethod,
+        subtotal: subtotal,
+        shipping: shipping,
+        totalAmount: total,
+        orderStatus: 'pending',
+        orderItems: cartItems.map(item => {
+          const isDiscounted = item._type === 'onsaleproducts' && item.currentPrice !== undefined;
+          const priceToStore = isDiscounted ? item.currentPrice : item.price;
+          return {
+            _key: item.id,
+            product: {
+              _type: 'reference',
+              _ref: item.id,
+            },
+            quantity: item.quantity,
+            price: item.price,
+            discountedPrice: priceToStore,
+          };
+        }),
+      };
+
+      const result = await createOrder(orderDocument, cartItems);
+
+      if (!result.success || !result.orderId) {
+        setErrors({ submit: 'Failed to initialize order. Please try again.' });
+        setIsProcessing(false);
+        return;
+      }
+
+      // Use the Sanity Order ID as the basketId
+      const basketId = result.orderId;
 
       // Step 1: Token lo
       const tokenRes = await fetch('/api/payfast/token', {

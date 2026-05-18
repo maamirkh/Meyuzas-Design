@@ -47,7 +47,7 @@ export interface OrderDocument {
 
 export async function createOrder(orderData: OrderDocument, cartItems: OrderItem[]) {
     try {
-        await client.create(orderData);
+        const result = await client.create(orderData);
 
         // Create a transaction to decrement inventory
         const transaction = client.transaction();
@@ -59,7 +59,7 @@ export async function createOrder(orderData: OrderDocument, cartItems: OrderItem
         await transaction.commit();
 
         revalidatePath("/admin_L5@X/orders"); // Revalidate admin orders page
-        return { success: true, message: "Order placed successfully." };
+        return { success: true, message: "Order placed successfully.", orderId: result._id };
     } catch (error: unknown) {
         console.error("Failed to place order:", error);
         const message = error instanceof Error ? error.message : "An unknown error occurred";

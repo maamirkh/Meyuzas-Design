@@ -27,6 +27,7 @@ export default function CheckoutPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [province, setProvince] = useState<string>('');
+  const [city, setCity] = useState<string>('');
 
   useEffect(() => {
     const loadCartItems = () => {
@@ -47,6 +48,8 @@ export default function CheckoutPage() {
           image: item.image?.asset ? urlFor(item.image).url() : '/placeholder.png', // ✅ Fixed
           _type: item._type,
           discountPercentage: item.discountPercentage,
+           // ✅ currentPrice ab checkout mein bhi available hogi
+          currentPrice: item.currentPrice ? Number(item.currentPrice) : undefined,
         }));
 
         setCartItems(formattedItems);
@@ -70,7 +73,9 @@ export default function CheckoutPage() {
   const subtotal = cartItems.reduce((sum, item) => {
     const itemPrice = Number(item.price) || 0;
     const itemQty = Number(item.quantity) || 0;
-    let priceToUse = itemPrice;
+    let priceToUse = item.currentPrice !== undefined
+  ? Number(item.currentPrice)
+  : Number(item.price) || 0;
 
     if (item._type === 'onsaleproducts' && item.currentPrice !== undefined) {
       priceToUse = item.currentPrice;
@@ -80,8 +85,19 @@ export default function CheckoutPage() {
 
   const tax = 0; // Tax remains 0 as before
 
-  // Calculate shipping and total based on province state
-  const shipping = province && province.toLowerCase() === 'sindh' ? 300 : province ? 300 : 0;
+  // Calculate shipping and total based on city and quantity
+  const totalQuantity = cartItems.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+  
+  let shipping = 0;
+  if (city) {
+    if (city.toLowerCase().trim() === 'karachi') {
+      shipping = 300;
+    } else {
+      // 1 item = 400, every additional item +50
+      shipping = 400 + (Math.max(0, totalQuantity - 1) * 50);
+    }
+  }
+
   const total = subtotal + shipping;
 
   if (isLoading) {
@@ -145,6 +161,7 @@ export default function CheckoutPage() {
               total={total}
               onOrderComplete={handleOrderComplete}
               onProvinceChange={setProvince}
+              onCityChange={setCity}
             />
           </div>
 
