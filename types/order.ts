@@ -11,7 +11,7 @@ export interface Order {
   city: string;
   province: string;
   postalCode: string;
-  paymentMethod: 'cod' | 'easypaisa' | 'jazzcash';
+  paymentMethod: 'cod' | 'payfast' | 'easypaisa' | 'jazzcash';
   paymentDetails?: {
     _type: 'object';
     accountNumber: string;
@@ -23,6 +23,8 @@ export interface Order {
   orderItems: {
     _key: string;
     quantity: number;
+    price?: number;
+    discountedPrice?: number;
     product: Product;
   }[];
   orderStatus: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';

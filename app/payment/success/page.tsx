@@ -1,8 +1,8 @@
 'use client';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { clearCart } from '../../actions/actions';
-import { useCart } from '../../app/context/CartContext';
+import { clearCart } from '../../../actions/actions';
+import { useCart } from '../../context/CartContext';
 
 export default function PaymentSuccess() {
   const router = useRouter();
