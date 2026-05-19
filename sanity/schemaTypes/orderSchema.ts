@@ -176,6 +176,7 @@ export default defineType({
       type: 'string',
       options: {
         list: [
+          {title: 'Payment Pending', value: 'payment_pending'},
           {title: 'Pending', value: 'pending'},
           {title: 'Processing', value: 'processing'},
           {title: 'Shipped', value: 'shipped'},

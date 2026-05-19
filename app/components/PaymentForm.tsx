@@ -159,7 +159,7 @@ export default function PaymentForm({
         subtotal: subtotal,
         shipping: shipping,
         totalAmount: total,
-        orderStatus: 'pending',
+        orderStatus: 'payment_pending',
         orderItems: cartItems.map(item => {
           const isDiscounted = item._type === 'onsaleproducts' && item.currentPrice !== undefined;
           const priceToStore = isDiscounted ? item.currentPrice : item.price;
