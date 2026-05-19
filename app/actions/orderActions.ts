@@ -47,9 +47,21 @@ export interface OrderDocument {
 
 export async function createOrder(orderData: OrderDocument, cartItems: OrderItem[]) {
     try {
+        // 1. First check if inventory is available for all items
+        for (const item of cartItems) {
+            const product = await client.fetch(`*[_id == $id][0]{inventory, productName}`, { id: item.id });
+            if (!product) {
+                return { success: false, message: `Product ${item.name} not found.` };
+            }
+            if ((product.inventory || 0) < item.quantity) {
+                return { success: false, message: `Insufficient inventory for ${product.productName}. Only ${product.inventory} left.` };
+            }
+        }
+
+        // 2. Create the order
         const result = await client.create(orderData);
 
-        // Create a transaction to decrement inventory
+        // 3. Create a transaction to decrement inventory
         const transaction = client.transaction();
         cartItems.forEach(item => {
             transaction.patch(item.id, {

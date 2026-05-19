@@ -64,6 +64,7 @@ export default function PaymentForm({
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [showSuccess, setShowSuccess] = useState(false);
+  const [lastCreatedOrderId, setLastCreatedOrderId] = useState<string | null>(null);
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -145,47 +146,51 @@ export default function PaymentForm({
   const handlePayFastPayment = async () => {
     setIsProcessing(true);
     try {
-      // Create the order in Sanity first
-      const orderDocument: OrderDocument = {
-        _type: 'order',
-        customerName: formData.fullName,
-        phone: formData.phone,
-        email: formData.email,
-        address: formData.address,
-        city: formData.city,
-        province: formData.province,
-        postalCode: formData.postalCode,
-        paymentMethod: formData.paymentMethod,
-        subtotal: subtotal,
-        shipping: shipping,
-        totalAmount: total,
-        orderStatus: 'payment_pending',
-        orderItems: cartItems.map(item => {
-          const isDiscounted = item._type === 'onsaleproducts' && item.currentPrice !== undefined;
-          const priceToStore = isDiscounted ? item.currentPrice : item.price;
-          return {
-            _key: item.id,
-            product: {
-              _type: 'reference',
-              _ref: item.id,
-            },
-            quantity: item.quantity,
-            price: item.price,
-            discountedPrice: priceToStore,
-          };
-        }),
-      };
+      let basketId = lastCreatedOrderId;
 
-      const result = await createOrder(orderDocument, cartItems);
+      if (!basketId) {
+        // Create the order in Sanity first
+        const orderDocument: OrderDocument = {
+          _type: 'order',
+          customerName: formData.fullName,
+          phone: formData.phone,
+          email: formData.email,
+          address: formData.address,
+          city: formData.city,
+          province: formData.province,
+          postalCode: formData.postalCode,
+          paymentMethod: formData.paymentMethod,
+          subtotal: subtotal,
+          shipping: shipping,
+          totalAmount: total,
+          orderStatus: 'payment_pending',
+          orderItems: cartItems.map(item => {
+            const isDiscounted = item._type === 'onsaleproducts' && item.currentPrice !== undefined;
+            const priceToStore = isDiscounted ? item.currentPrice : item.price;
+            return {
+              _key: item.id,
+              product: {
+                _type: 'reference',
+                _ref: item.id,
+              },
+              quantity: item.quantity,
+              price: item.price,
+              discountedPrice: priceToStore,
+            };
+          }),
+        };
 
-      if (!result.success || !result.orderId) {
-        setErrors({ submit: 'Failed to initialize order. Please try again.' });
-        setIsProcessing(false);
-        return;
+        const result = await createOrder(orderDocument, cartItems);
+
+        if (!result.success || !result.orderId) {
+          setErrors({ submit: result.message || 'Failed to initialize order. Please try again.' });
+          setIsProcessing(false);
+          return;
+        }
+
+        basketId = result.orderId;
+        setLastCreatedOrderId(basketId);
       }
-
-      // Use the Sanity Order ID as the basketId
-      const basketId = result.orderId;
 
       // Step 1: Token lo
       const tokenRes = await fetch('/api/payfast/token', {
