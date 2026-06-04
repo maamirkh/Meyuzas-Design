@@ -155,7 +155,7 @@ const OrdersClient = ({ orders: initialOrders }: { orders: Order[] }) => {
                      <div className="mt-4 space-y-4">
                         {/* Customer & Shipping */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
+                            <div className='text-gray-900'>
                                 <h4 className="font-bold">Customer</h4>
                                 <p>{selectedOrder.customerName}</p>
                                 <p>{selectedOrder.email}</p>
@@ -163,14 +163,14 @@ const OrdersClient = ({ orders: initialOrders }: { orders: Order[] }) => {
                                 <p className="mt-2"><span className="font-bold">Payment:</span> <span className="uppercase">{selectedOrder.paymentMethod === 'payfast' ? 'Online (PayFast)' : selectedOrder.paymentMethod}</span></p>
                                 <p className="text-sm text-gray-600 mt-2">Order Placed: {new Date(selectedOrder._createdAt).toLocaleString()}</p>
                             </div>
-                            <div>
+                            <div className='text-gray-900'>
                                 <h4 className="font-bold">Shipping Address</h4>
                                 <p>{selectedOrder.address}</p>
                                 <p>{selectedOrder.city}, {selectedOrder.province}, {selectedOrder.postalCode}</p>
                             </div>
                         </div>
                         {/* Items */}
-                        <div>
+                        <div className='text-gray-900'>
                              <h4 className="font-bold mb-2">Order Items</h4>
                              <div className="space-y-2">
                                 {selectedOrder.orderItems.map(item => {
@@ -193,7 +193,7 @@ const OrdersClient = ({ orders: initialOrders }: { orders: Order[] }) => {
                             </div>
                         </div>
                          {/* Pricing */}
-                        <div className="text-right">
+                        <div className="text-right text-gray-900">
                             <p>Subtotal: Rs. {(selectedOrder.subtotal || 0).toFixed(2)}</p>
                             <p>Shipping: Rs. {(selectedOrder.shipping || 0).toFixed(2)}</p>
                             <p className="font-bold text-lg">Total: Rs. {(selectedOrder.totalAmount || 0).toFixed(2)}</p>
