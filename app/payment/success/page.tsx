@@ -1,25 +1,27 @@
 'use client';
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { clearCart } from '../../../actions/actions';
 import { useCart } from '../../context/CartContext';
 
-export default function PaymentSuccess() {
+function PaymentSuccessContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { updateCartCount } = useCart();
+  const basketId = searchParams.get('basket_id');
 
   useEffect(() => {
     // Clear the cart on successful payment
     clearCart();
     updateCartCount();
     
-    // Redirect to the unified order success page
+    // Redirect to the unified order success page with orderId
     const timer = setTimeout(() => {
-      router.push('/order-success');
+      router.push(`/order-success${basketId ? `?orderId=${basketId}` : ''}`);
     }, 2000);
 
     return () => clearTimeout(timer);
-  }, [router, updateCartCount]);
+  }, [router, updateCartCount, basketId]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#9ECFD4] via-[#78B9B5] to-[#016B61]/20 flex items-center justify-center p-4">
@@ -37,4 +39,16 @@ export default function PaymentSuccess() {
       </div>
     </div>
   );
+}
+
+export default function PaymentSuccess() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-4 border-[#78B9B5] border-t-transparent"></div>
+            </div>
+        }>
+            <PaymentSuccessContent />
+        </Suspense>
+    );
 }

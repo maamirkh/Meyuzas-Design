@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { client } from "../../sanity/lib/client";
+import { sendInvoiceEmail } from "./emailActions";
 
 interface OrderItem {
     id: string;
@@ -69,6 +70,22 @@ export async function createOrder(orderData: OrderDocument, cartItems: OrderItem
             });
         });
         await transaction.commit();
+
+        // 4. Send Invoice Email (only for COD or if already paid, but online is handled in IPN)
+        if (orderData.paymentMethod === 'cod') {
+            await sendInvoiceEmail({
+                orderId: result._id,
+                customerName: orderData.customerName,
+                email: orderData.email,
+                items: cartItems,
+                totalAmount: orderData.totalAmount,
+                subtotal: orderData.subtotal,
+                shipping: orderData.shipping,
+                paymentMethod: orderData.paymentMethod,
+                address: orderData.address,
+                city: orderData.city,
+            });
+        }
 
         revalidatePath("/admin_L5@X/orders"); // Revalidate admin orders page
         return { success: true, message: "Order placed successfully.", orderId: result._id };

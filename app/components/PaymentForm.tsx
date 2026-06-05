@@ -163,7 +163,7 @@ export default function PaymentForm({
           subtotal: subtotal,
           shipping: shipping,
           totalAmount: total,
-          orderStatus: 'payment_pending',
+          orderStatus: 'pending',
           orderItems: cartItems.map(item => {
             const isDiscounted = item._type === 'onsaleproducts' && item.currentPrice !== undefined;
             const priceToStore = isDiscounted ? item.currentPrice : item.price;
@@ -319,7 +319,7 @@ export default function PaymentForm({
       setShowSuccess(true);
 
       setTimeout(() => {
-        router.push('/order-success');
+        router.push(`/order-success?orderId=${result.orderId}`);
       }, 2000);
 
     } catch (error) {

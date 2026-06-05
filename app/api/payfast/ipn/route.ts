@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { client } from "@/sanity/lib/client"; // aapka Sanity client
+import { sendInvoiceEmail } from "@/app/actions/emailActions";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
@@ -13,7 +14,7 @@ export async function POST(req: NextRequest) {
 
   if (TXNRESPCODE === "00") {
     // Order ko Sanity mein update karo - Status 'pending' set karo
-    await client
+    const updatedOrder = await client
       .patch(BASKET_ID)
       .set({
         paymentStatus: "paid",
@@ -23,6 +24,44 @@ export async function POST(req: NextRequest) {
         paidAt: new Date().toISOString(),
       })
       .commit();
+
+    // Fetch full order details with product names for invoice email
+    try {
+        const orderDetails = await client.fetch(`*[_id == $id][0] {
+            _id,
+            customerName,
+            email,
+            totalAmount,
+            subtotal,
+            shipping,
+            paymentMethod,
+            address,
+            city,
+            orderItems[] {
+                quantity,
+                price,
+                discountedPrice,
+                "name": product->productName
+            }
+        }`, { id: BASKET_ID });
+
+        if (orderDetails && orderDetails.email) {
+            await sendInvoiceEmail({
+                orderId: orderDetails._id,
+                customerName: orderDetails.customerName,
+                email: orderDetails.email,
+                items: orderDetails.orderItems,
+                totalAmount: orderDetails.totalAmount,
+                subtotal: orderDetails.subtotal,
+                shipping: orderDetails.shipping,
+                paymentMethod: orderDetails.paymentMethod,
+                address: orderDetails.address,
+                city: orderDetails.city,
+            });
+        }
+    } catch (emailError) {
+        console.error("Failed to send IPN invoice email:", emailError);
+    }
   } else {
     // Agar payment fail hui to inventory wapas karo aur order delete kardo
     try {
