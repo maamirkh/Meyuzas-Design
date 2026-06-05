@@ -91,7 +91,7 @@ export default function CheckoutPage() {
   let shipping = 0;
   if (city) {
     if (city.toLowerCase().trim() === 'karachi') {
-      shipping = 350;
+      shipping = 0;
     } else {
       // 1 item = 400, every additional item +50
       shipping = 400 + (Math.max(0, totalQuantity - 1) * 50);
